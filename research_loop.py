@@ -47,6 +47,7 @@ def verify(root, python, mutations=False):
     run(command, root)
 
 def build(root, python):
+    run([python, 'tools/fetch_reference.py'], root)
     check_reference(root)
     run([python,'tools/build.py'], root)
 
