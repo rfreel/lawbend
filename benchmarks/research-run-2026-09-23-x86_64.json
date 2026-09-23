@@ -1,0 +1,248 @@
+{
+  "status": "completed",
+  "started_utc": "2026-09-23T23:24:34Z",
+  "sizes": [
+    0,
+    136,
+    1024
+  ],
+  "samples": 3,
+  "target_ratio": 2.0,
+  "candidates": [
+    {
+      "name": "rol0_identity",
+      "status": "measured",
+      "target": "src/lane.bend",
+      "source_sha256": "4c8a4c4a95eb6298d15b3b2c7a64c1730543f1356149ce860ece947e4bb49ea6",
+      "rows": [
+        {
+          "bytes": 0,
+          "baseline_us": 0.583648681640625,
+          "candidate_us": 0.57220458984375,
+          "reference_us": 0.3256965675354004,
+          "candidate_over_reference": 1.7568640473361954,
+          "candidate_over_baseline": 0.9803921568627451
+        },
+        {
+          "bytes": 136,
+          "baseline_us": 1.1956704570095673,
+          "candidate_us": 1.1510861348837869,
+          "reference_us": 0.6264091239788669,
+          "candidate_over_reference": 1.837594777630699,
+          "candidate_over_baseline": 0.9627118644067797
+        },
+        {
+          "bytes": 1024,
+          "baseline_us": 4.486083984375,
+          "candidate_us": 4.608154296875,
+          "reference_us": 2.6127110137939455,
+          "candidate_over_reference": 1.7637443531052637,
+          "candidate_over_baseline": 1.0272108843537415
+        }
+      ],
+      "benchmark": {
+        "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+        "machine": "x86_64",
+        "bend": "bend 2.0.16",
+        "compiler": "Ubuntu clang version 19.1.1 (1ubuntu1~24.04.2)",
+        "flags": [
+          "-O3",
+          "-march=native",
+          "-std=c11"
+        ],
+        "reference_commit": "eb5244d6b95fb1c434b211bac293093e18aa8fd1",
+        "warmups": 1,
+        "samples": 3,
+        "boundary": "Repeated public hashes; preparation excluded. Bend input clone included; C memcpy into preallocated scratch included. First digest word checksummed; separate full digest gate required.",
+        "binary_sha256": {
+          "bench": "705052cd36a4a6d35b6faa03408d9c36c5fd5825fc927ee1709bbd8a53a722fc",
+          "xkcp": "84de2c764bf9b90c6108c56461d61923dd350a9e90b1a37573b2945c1d02ec8a"
+        },
+        "production_sha256": {
+          "src/hex.bend": "607ca4a6ecc620c6598d4506c29cdbc5461c006f20394906e5ce1a28bf17779a",
+          "src/keccak.bend": "1aed0cd74f2285ae95c84fb24e936e75919650de8c0c43f35084ddce5a62be08",
+          "src/lane.bend": "4c8a4c4a95eb6298d15b3b2c7a64c1730543f1356149ce860ece947e4bb49ea6",
+          "src/permutation.bend": "8812e31805cf1db0ffd98cbb7f4349be2f21207b259b17b0e7c0d6f23fd77e11",
+          "src/types.bend": "e4012298aeaf5bf25f9fbf43b4b1c1405902f20b4c44ee252c7740c6432a954c"
+        },
+        "rows": [
+          {
+            "bytes": 0,
+            "count": 524288,
+            "samples_ms": {
+              "bend": [
+                327.0,
+                295.0,
+                300.0
+              ],
+              "xkcp": [
+                171.751873,
+                170.758802,
+                164.780384
+              ]
+            },
+            "us_per_hash": {
+              "bend": 0.57220458984375,
+              "xkcp": 0.3256965675354004
+            },
+            "ratio": 1.7568640473361954,
+            "checksum_verified": true,
+            "xkcp_full_digest_verified": true
+          },
+          {
+            "bytes": 136,
+            "count": 493447,
+            "samples_ms": {
+              "bend": [
+                568.0,
+                565.0,
+                577.0
+              ],
+              "xkcp": [
+                295.614632,
+                323.297215,
+                309.099703
+              ]
+            },
+            "us_per_hash": {
+              "bend": 1.1510861348837869,
+              "xkcp": 0.6264091239788669
+            },
+            "ratio": 1.837594777630699,
+            "checksum_verified": true,
+            "xkcp_full_digest_verified": true
+          },
+          {
+            "bytes": 1024,
+            "count": 65536,
+            "samples_ms": {
+              "bend": [
+                297.0,
+                302.0,
+                309.0
+              ],
+              "xkcp": [
+                171.430887,
+                155.762175,
+                171.226629
+              ]
+            },
+            "us_per_hash": {
+              "bend": 4.608154296875,
+              "xkcp": 2.6127110137939455
+            },
+            "ratio": 1.7637443531052637,
+            "checksum_verified": true,
+            "xkcp_full_digest_verified": true
+          }
+        ]
+      },
+      "all_rows_under_target": true,
+      "note": "Exploratory timings only; rerun on a clean consumer before any performance claim."
+    },
+    {
+      "name": "chi_complement",
+      "status": "rejected",
+      "target": "src/lane.bend",
+      "source_sha256": "1c8de0a6b5fef94fa4fad470f40a62af2f562c44150f46352dc44dedd734cfbf",
+      "reason": "/workspace/scratch/0f4186d7e4ee/lawbend/.venv/bin/python ['research_validate.py'] exited 1: RuntimeError: ['/root/.bend/bin/bend', 'PROOF.bend']: "
+    }
+  ],
+  "baseline": {
+    "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "bend": "bend 2.0.16",
+    "compiler": "Ubuntu clang version 19.1.1 (1ubuntu1~24.04.2)",
+    "flags": [
+      "-O3",
+      "-march=native",
+      "-std=c11"
+    ],
+    "reference_commit": "eb5244d6b95fb1c434b211bac293093e18aa8fd1",
+    "warmups": 1,
+    "samples": 3,
+    "boundary": "Repeated public hashes; preparation excluded. Bend input clone included; C memcpy into preallocated scratch included. First digest word checksummed; separate full digest gate required.",
+    "binary_sha256": {
+      "bench": "705052cd36a4a6d35b6faa03408d9c36c5fd5825fc927ee1709bbd8a53a722fc",
+      "xkcp": "84de2c764bf9b90c6108c56461d61923dd350a9e90b1a37573b2945c1d02ec8a"
+    },
+    "production_sha256": {
+      "src/hex.bend": "607ca4a6ecc620c6598d4506c29cdbc5461c006f20394906e5ce1a28bf17779a",
+      "src/keccak.bend": "1aed0cd74f2285ae95c84fb24e936e75919650de8c0c43f35084ddce5a62be08",
+      "src/lane.bend": "c060182a6a1ad25b6342c2f15fe532b1971bb2072b5f3570ba2a300460a6b2ae",
+      "src/permutation.bend": "8812e31805cf1db0ffd98cbb7f4349be2f21207b259b17b0e7c0d6f23fd77e11",
+      "src/types.bend": "e4012298aeaf5bf25f9fbf43b4b1c1405902f20b4c44ee252c7740c6432a954c"
+    },
+    "rows": [
+      {
+        "bytes": 0,
+        "count": 524288,
+        "samples_ms": {
+          "bend": [
+            295.0,
+            336.0,
+            306.0
+          ],
+          "xkcp": [
+            171.329671,
+            166.51762,
+            168.875407
+          ]
+        },
+        "us_per_hash": {
+          "bend": 0.583648681640625,
+          "xkcp": 0.3221042766571045
+        },
+        "ratio": 1.8119867506818206,
+        "checksum_verified": true,
+        "xkcp_full_digest_verified": true
+      },
+      {
+        "bytes": 136,
+        "count": 493447,
+        "samples_ms": {
+          "bend": [
+            627.0,
+            564.0,
+            590.0
+          ],
+          "xkcp": [
+            306.97556,
+            325.906718,
+            334.328031
+          ]
+        },
+        "us_per_hash": {
+          "bend": 1.1956704570095673,
+          "xkcp": 0.6604695499212682
+        },
+        "ratio": 1.8103339618792391,
+        "checksum_verified": true,
+        "xkcp_full_digest_verified": true
+      },
+      {
+        "bytes": 1024,
+        "count": 65536,
+        "samples_ms": {
+          "bend": [
+            300.0,
+            294.0,
+            293.0
+          ],
+          "xkcp": [
+            179.349225,
+            162.399258,
+            168.856718
+          ]
+        },
+        "us_per_hash": {
+          "bend": 4.486083984375,
+          "xkcp": 2.5765490417480468
+        },
+        "ratio": 1.7411211320594304,
+        "checksum_verified": true,
+        "xkcp_full_digest_verified": true
+      }
+    ]
+  }
+}

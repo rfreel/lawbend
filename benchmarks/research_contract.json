@@ -1,0 +1,94 @@
+{
+  "upstream": "Giulio2002/bend-keccak@b36ae58b3135d4b690b76d937f612c3338bbac1f",
+  "bend_version": "bend 2.0.16",
+  "reference_commit": "eb5244d6b95fb1c434b211bac293093e18aa8fd1",
+  "frozen_files": {
+    "LAWS.bend": "cc8d8956cd31872a01c7901dc77524ae54857c9655c1ceead7e7c30c29c57d45",
+    "PROOF.bend": "34f7cb9bcd57a487556667af258387b4a7bf3beeeced74778fdcb14fb3e605f0",
+    "spec/permutation.bend": "3f8e4cd8600cdf67b2590c91c0a9417e7dcd06a351c32a47f06cde46cff04b13",
+    "spec/sponge.bend": "83fac05fe05732f6608d79a46efd1c334197e6217ff26e32c6aa24de90ff87ee",
+    "proofs/api.bend": "9952d7b08711f6106a6c8f19d9f767c3fae3971048c8a4b1bd363e5d239a295d",
+    "proofs/array.bend": "e2b75e5120c61f780a0eb7d252d4a16c732f664d4e05aea6688848e4fe50bcd0",
+    "proofs/permutation.bend": "ac72bf81ecd4324196e119d4e3102a47306e4f19ed2fd6fc4899433b87a641b7",
+    "proofs/sponge.bend": "6944c39e0e535613b64ba40ea95f20cc8bbc7f0a13c00d5e3deeca04c4ebbadb",
+    "tests/vectors.bend": "c1ce3089e224ccb136e5242067774a4ae3fda343cc132033b95a115a4becbe64",
+    "benchmarks/driver.bend": "a97f56c54b545aeb81da607dbd0a7312ccec9030df2d6e2e39e79d11e5103728",
+    "benchmarks/xkcp.c": "e16f195ad9540716e2aef69a5c5063544dda615c259fa685aea3c7b5adad845b",
+    "tools/validate.py": "a95cce42a12685ecf4c62332a9ce16f62efde001348fb2b26891439b982f7668",
+    "tools/build.py": "d1aa8554636bbb4415b90c3161d3fc32b493ce87571828b2f45298a56a9dc739",
+    "tools/build_c.py": "5d88ed4c1351cf735850726a2a87cce95e887359f42190bccb3ece0029af9591",
+    "tools/fetch_reference.py": "2f1cd37811e110c2a19c2ee3222261ac773c667bdf3a92345e6e7c03e524eaa2",
+    "tools/benchmark.py": "6ec9761fe34c9af406c2fda3ee8df43afac74c35d45fe200064aaced3d88e8c9",
+    "pyproject.toml": "3b96e1283c6f3be60dc2cbaf08c7955ffd316c9b45ff118e5307399462fd06f9",
+    "uv.lock": "f258760868359093c1dc7db813dbcf36c90eb9ee40f4f4a5d94fa70558dc85ba"
+  },
+  "bend_files": [
+    "proofs/api.bend",
+    "proofs/array.bend",
+    "proofs/permutation.bend",
+    "proofs/sponge.bend",
+    "spec/permutation.bend",
+    "spec/sponge.bend",
+    "src/hex.bend",
+    "src/keccak.bend",
+    "src/lane.bend",
+    "src/permutation.bend",
+    "src/types.bend"
+  ],
+  "imports": {
+    "proofs/api.bend": [
+      "Base",
+      "../src/keccak.bend as K",
+      "../src/types.bend as T"
+    ],
+    "proofs/array.bend": [
+      "Base"
+    ],
+    "proofs/permutation.bend": [
+      "Base",
+      "../src/types.bend as T",
+      "../src/permutation.bend as P",
+      "../spec/permutation.bend as S"
+    ],
+    "proofs/sponge.bend": [
+      "Base",
+      "../src/types.bend as T",
+      "../src/keccak.bend as K",
+      "../src/permutation.bend as P",
+      "../spec/permutation.bend as F",
+      "../spec/sponge.bend as R",
+      "./permutation.bend as Q",
+      "./array.bend as A"
+    ],
+    "spec/permutation.bend": [
+      "Base",
+      "../src/types.bend as T"
+    ],
+    "spec/sponge.bend": [
+      "Base",
+      "../src/types.bend as T",
+      "./permutation.bend as F"
+    ],
+    "src/hex.bend": [
+      "Base"
+    ],
+    "src/keccak.bend": [
+      "Base",
+      "./types.bend as T",
+      "./lane.bend as L",
+      "./permutation.bend as P"
+    ],
+    "src/lane.bend": [
+      "Base",
+      "./types.bend as T"
+    ],
+    "src/permutation.bend": [
+      "Base",
+      "./types.bend as T",
+      "./lane.bend as L"
+    ],
+    "src/types.bend": [
+      "Base"
+    ]
+  }
+}

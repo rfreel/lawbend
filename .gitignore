@@ -1,0 +1,7 @@
+build/
+benchmarks/results-local.json
+.venv/
+__pycache__/
+vendor/XKCP/
+
+vendor/lean-keccak/

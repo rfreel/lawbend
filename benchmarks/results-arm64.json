@@ -1,0 +1,290 @@
+{
+  "host": "macOS-15.6-arm64-arm-64bit",
+  "bend": "bend 2.0.16",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+  "flags": [
+    "-O3",
+    "-march=native",
+    "-std=c11"
+  ],
+  "reference_commit": "eb5244d6b95fb1c434b211bac293093e18aa8fd1",
+  "warmups": 1,
+  "samples": 5,
+  "boundary": "Repeated public hashes, input preparation excluded; packed input clone included in Bend, memcpy into preallocated scratch included in C. Digest checksum retained.",
+  "rows": [
+    {
+      "bytes": 0,
+      "count": 524288,
+      "samples_ms": {
+        "bend": [
+          432.0,
+          415.0,
+          433.0,
+          399.0,
+          359.0
+        ],
+        "xkcp": [
+          115.63,
+          125.943,
+          117.075,
+          118.023,
+          91.563
+        ]
+      },
+      "us_per_hash": {
+        "bend": 0.7915496826171875,
+        "xkcp": 0.22330284118652344
+      },
+      "ratio": 3.5447362801622893,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 32,
+      "count": 524288,
+      "samples_ms": {
+        "bend": [
+          390.0,
+          427.0,
+          374.0,
+          352.0,
+          374.0
+        ],
+        "xkcp": [
+          119.482,
+          124.307,
+          99.791,
+          97.081,
+          100.006
+        ]
+      },
+      "us_per_hash": {
+        "bend": 0.713348388671875,
+        "xkcp": 0.19074630737304688
+      },
+      "ratio": 3.739775613463192,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 64,
+      "count": 524288,
+      "samples_ms": {
+        "bend": [
+          349.0,
+          350.0,
+          411.0,
+          372.0,
+          361.0
+        ],
+        "xkcp": [
+          96.206,
+          96.498,
+          104.453,
+          100.771,
+          96.337
+        ]
+      },
+      "us_per_hash": {
+        "bend": 0.6885528564453125,
+        "xkcp": 0.18405532836914062
+      },
+      "ratio": 3.7410101763767125,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 135,
+      "count": 497102,
+      "samples_ms": {
+        "bend": [
+          356.0,
+          355.0,
+          355.0,
+          360.0,
+          345.0
+        ],
+        "xkcp": [
+          92.426,
+          95.697,
+          99.511,
+          95.293,
+          98.027
+        ]
+      },
+      "us_per_hash": {
+        "bend": 0.714139150516393,
+        "xkcp": 0.19250978672385144
+      },
+      "ratio": 3.709625171112992,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 136,
+      "count": 493447,
+      "samples_ms": {
+        "bend": [
+          646.0,
+          698.0,
+          819.0,
+          692.0,
+          650.0
+        ],
+        "xkcp": [
+          179.607,
+          182.315,
+          199.825,
+          189.831,
+          182.165
+        ]
+      },
+      "us_per_hash": {
+        "bend": 1.4023795868654587,
+        "xkcp": 0.36947230401643943
+      },
+      "ratio": 3.795628445273291,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 137,
+      "count": 489845,
+      "samples_ms": {
+        "bend": [
+          682.0,
+          867.0,
+          828.0,
+          667.0,
+          626.0
+        ],
+        "xkcp": [
+          230.8,
+          227.189,
+          223.078,
+          203.222,
+          179.768
+        ]
+      },
+      "us_per_hash": {
+        "bend": 1.392277148894038,
+        "xkcp": 0.4554052812624402
+      },
+      "ratio": 3.0572266202852814,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 1024,
+      "count": 65536,
+      "samples_ms": {
+        "bend": [
+          331.0,
+          330.0,
+          331.0,
+          331.0,
+          339.0
+        ],
+        "xkcp": [
+          92.256,
+          92.242,
+          92.369,
+          92.567,
+          92.432
+        ]
+      },
+      "us_per_hash": {
+        "bend": 5.0506591796875,
+        "xkcp": 1.4094390869140625
+      },
+      "ratio": 3.583453323084585,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 16384,
+      "count": 4096,
+      "samples_ms": {
+        "bend": [
+          315.0,
+          324.0,
+          340.0,
+          355.0,
+          422.0
+        ],
+        "xkcp": [
+          87.123,
+          87.033,
+          104.703,
+          104.597,
+          130.312
+        ]
+      },
+      "us_per_hash": {
+        "bend": 83.0078125,
+        "xkcp": 25.536376953125
+      },
+      "ratio": 3.250571240092928,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 65536,
+      "count": 1024,
+      "samples_ms": {
+        "bend": [
+          383.0,
+          375.0,
+          342.0,
+          332.0,
+          312.0
+        ],
+        "xkcp": [
+          102.9,
+          97.67,
+          95.286,
+          100.891,
+          86.668
+        ]
+      },
+      "us_per_hash": {
+        "bend": 333.984375,
+        "xkcp": 95.380859375
+      },
+      "ratio": 3.501586976553701,
+      "checksum_verified": true
+    },
+    {
+      "bytes": 1048576,
+      "count": 64,
+      "samples_ms": {
+        "bend": [
+          398.0,
+          376.0,
+          361.0,
+          334.0,
+          334.0
+        ],
+        "xkcp": [
+          104.674,
+          104.645,
+          107.523,
+          100.079,
+          95.798
+        ]
+      },
+      "us_per_hash": {
+        "bend": 5640.625,
+        "xkcp": 1635.078125
+      },
+      "ratio": 3.4497587080128054,
+      "checksum_verified": true
+    }
+  ],
+  "binary_sha256": {
+    "bench": "ac5d462ac9ea053fcd16d35ba4aa2320824ddaf11e855c385aca832d69d403e2",
+    "xkcp": "4cde500d94b9be3797a74f8819d4bc3ea09967ec73ce25a5dfb7e96dbed66566"
+  },
+  "production_sha256": {
+    "src/permutation.bend": "8812e31805cf1db0ffd98cbb7f4349be2f21207b259b17b0e7c0d6f23fd77e11",
+    "src/hex.bend": "607ca4a6ecc620c6598d4506c29cdbc5461c006f20394906e5ce1a28bf17779a",
+    "src/keccak.bend": "1aed0cd74f2285ae95c84fb24e936e75919650de8c0c43f35084ddce5a62be08",
+    "src/types.bend": "e4012298aeaf5bf25f9fbf43b4b1c1405902f20b4c44ee252c7740c6432a954c",
+    "src/lane.bend": "c060182a6a1ad25b6342c2f15fe532b1971bb2072b5f3570ba2a300460a6b2ae"
+  },
+  "timestamp_utc": "2026-09-20T16:28:24.181078+00:00",
+  "cpu": "Apple M4",
+  "shared_host": true
+}

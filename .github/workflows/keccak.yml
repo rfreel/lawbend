@@ -1,0 +1,39 @@
+name: Keccak research gate
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Bend 2.0.16
+        run: |
+          curl -fL --retry 3 -o bend.tar.gz https://github.com/bendlang/bend/releases/download/v2.0.16/bend-2.0.16-linux-x64.tar.gz
+          echo '496ff13a312221c3dc0dde4077368ced42c0f3eadcb61c2d43de5caddf0e50b4  bend.tar.gz' | sha256sum -c -
+          mkdir -p "$HOME/.bend"
+          tar -xzf bend.tar.gz -C "$HOME/.bend" --strip-components=1
+          "$HOME/.bend/bin/bend" --version
+          clang --version
+      - name: Install pinned Python reference
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install pycryptodome==3.23.0
+      - name: Check public laws, differential vectors, and proof mutations
+        env:
+          BEND_NO_TELEMETRY: '1'
+        run: .venv/bin/python research_validate.py --mutations
+      - name: Execute isolated research trial
+        env:
+          BEND_NO_TELEMETRY: '1'
+        run: .venv/bin/python research_loop.py --recipes rol0_identity --sizes 0 136 --samples 3
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: keccak-research-report
+          path: build/research-runs/latest.json
+          if-no-files-found: ignore
