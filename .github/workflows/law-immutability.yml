@@ -1,0 +1,23 @@
+name: law-immutability
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-law:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify canonical LAW.bend blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=3931831adee1b4c9511653b01590fc55aaf632ba
+          actual="$(git hash-object LAW.bend)"
+          echo "expected=$expected"
+          echo "actual=$actual"
+          test "$actual" = "$expected"
