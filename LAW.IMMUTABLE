@@ -1,0 +1,15 @@
+LAW.bend immutable anchor
+
+Authoritative commit:
+cf74a857e400273c98e200fb9efa700de66b32e2
+
+Git blob:
+3931831adee1b4c9511653b01590fc55aaf632ba
+
+Snapshot branch:
+law-v1-cf74a857
+
+Rule:
+Any edit to LAW.bend creates a different Git blob and commit. The commit above is the
+canonical v1 law. Consumers MUST fetch LAW.bend by that commit SHA (or verify the blob
+hash) rather than trusting a movable branch name.
