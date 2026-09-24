@@ -2,6 +2,8 @@
 
 A runnable, bounded optimization loop for the **public Ethereum Keccak-256 API in Bend 2.0.16**. It starts from [Giulio2002/bend-keccak at b36ae58](https://github.com/Giulio2002/bend-keccak/tree/b36ae58b3135d4b690b76d937f612c3338bbac1f) (MIT license). Its separately structured sponge specification and public refinement proof are preserved. This fork adds a frozen experiment contract, isolated candidate trials, differential validation, and paired benchmarks against pinned [XKCP](https://github.com/XKCP/XKCP/tree/eb5244d6b95fb1c434b211bac293093e18aa8fd1) optimized portable C. See [the original API and historical Apple M4 benchmarks](UPSTREAM_README.md) and [the proof boundary](CORRECTNESS.md).
 
+Coding agents should follow [AGENTS.md](AGENTS.md), which binds this repository to a vendored, checksum-pinned copy of the `bend-build` skill and its research-loop reference.
+
 ## Run
 
 Install stock Bend **2.0.16**, Clang, Git, Python 3.11+, and [uv](https://docs.astral.sh/uv/). Put `bend` at `~/.bend/bin/bend` or set `BEND` to its path. `clang` must be on `PATH`. The code needs Clang for generated C; GCC does not accept Bend 2.0.16's generated `musttail` syntax.

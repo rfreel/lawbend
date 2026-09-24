@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+      - name: Verify pinned bend-build skill
+        run: sha256sum --check .agents/skills/bend-build/SHA256SUMS
       - name: Install pinned Bend 2.0.16
         run: |
           curl -fL --retry 3 -o bend.tar.gz https://github.com/bendlang/bend/releases/download/v2.0.16/bend-2.0.16-linux-x64.tar.gz

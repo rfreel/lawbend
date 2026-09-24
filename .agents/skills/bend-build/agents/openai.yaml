@@ -1,0 +1,14 @@
+interface:
+  display_name: Bend Build
+  short_description: Build efficient, maintainable software in Bend
+  default_prompt: Use bend-build to design and implement this Bend task, preserving
+    its public API and checking performance and proof claims at their proper scope.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
