@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Verify canonical LAW.bend blob
         shell: bash
         run: |
@@ -21,3 +22,23 @@ jobs:
           echo "expected=$expected"
           echo "actual=$actual"
           test "$actual" = "$expected"
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Parse and type-check canonical law specification
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          nix run github:lukasl-dev/bend.nix -- LAW.bend > bend-check.log 2>&1
+          status=$?
+          set -e
+          cat bend-check.log
+
+          # LAW.bend is intentionally a specification with nine open laws.
+          # Bend therefore exits nonzero, but it must reach the open-law report
+          # rather than a syntax/type error.
+          test "$status" -ne 0
+          grep -F "9 TODOs found." bend-check.log
+          ! grep -F "Error:" bend-check.log
