@@ -112,3 +112,28 @@ made the old broad `! grep "Error:"` predicate reject a correct observation.
 **Consequence:** negative gates identify the expected diagnostic and reject only
 additional/unexpected errors. Tool-output wording changes are treated as tooling
 evidence, not as theorem failures.
+
+
+## D-0011 — Reuse evidence by dependency identity
+
+**Decision:** gate results are reusable only through claim-specific dependency
+receipts, not by age, branch name, or superficial file proximity.
+
+**Reason:** the useful question is whether inputs to the claim changed. Rerunning
+unaffected gates wastes resources; reusing a result after a real dependency
+change is unsound.
+
+**Consequence:** `.agents/CLAIMS.json` declares dependency surfaces and CI emits
+receipts containing aggregate and per-file identities. `fresh` means same
+declared dependency state, nothing stronger.
+
+## D-0012 — Receipts point to evidence; they are not evidence upgrades
+
+**Decision:** a receipt records what ran, on which dependency state, with what
+scope and result.
+
+**Reason:** internal metadata cannot turn finite tests into universal proof or a
+project-controlled check into independent external validation.
+
+**Consequence:** every receipt carries the claim scope and evidence URI; gate
+class boundaries remain unchanged.

@@ -102,3 +102,21 @@ Before reporting completion:
 
 Use `AFTER_ACTION_REPORT.md` only for chronology, provenance, and failure
 forensics. It is not required reading for ordinary tasks.
+
+
+## 7. Reuse valid receipts
+
+Before rerunning an expensive gate, check whether a receipt exists for its
+registered claim:
+
+```sh
+.agents/bin/gate-receipt.sh explain <claim>
+.agents/bin/gate-receipt.sh status <claim> <receipt.json>
+```
+
+- `fresh` → the declared dependency state is unchanged; reuse the observation
+  if its original scope still answers the task.
+- `stale` → rerun that claim's gate.
+- no receipt → run the cheapest gate capable of producing one.
+
+Never use freshness to widen claim scope or change evidence class.

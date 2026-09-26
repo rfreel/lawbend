@@ -201,3 +201,56 @@ Read < Check < FocusedProof/Test < FullValidation < Build < Benchmark < External
 Use the cheapest class capable of deciding the live uncertainty. Cache stable
 facts such as the exact compiler command/version and re-run only when a
 dependency changed.
+
+
+## Gate receipts and freshness
+
+A gate result is reusable only when the dependencies that define its claim have
+not changed.
+
+For registered claim `c`:
+
+```
+D(c) = ordered set of tracked dependency files
+H(c) = sha256(sort(blob(file), path) for file in D(c))
+```
+
+A receipt records:
+
+```
+Receipt = <
+  ClaimId,
+  Gates,
+  SourceTree,
+  DependencySetHash,
+  DependencyBlobs,
+  ToolVersion,
+  Command,
+  Result,
+  EvidenceURI,
+  Scope
+>
+```
+
+A receipt is **fresh** exactly when its recorded dependency-set hash equals the
+current `H(c)`. Otherwise it is **stale**.
+
+Freshness means only that the same gate observed the same declared dependency
+state. It does not upgrade the epistemic class of the evidence.
+
+The canonical dependency registry is `.agents/CLAIMS.json`. The executable
+projection is `.agents/bin/gate-receipt.sh`.
+
+This makes invalidation mechanical:
+
+```
+changed dependency
+       ↓
+H(c) changes
+       ↓
+receipt(c) = stale
+       ↓
+rerun only the gate(s) for c
+```
+
+Claims not consuming the changed dependency remain fresh.

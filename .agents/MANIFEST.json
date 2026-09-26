@@ -6,10 +6,15 @@
   "decisions": "DECISIONS.md",
   "roadmap": "ROADMAP.md",
   "task_template": ".agents/TASK_TEMPLATE.md",
+  "claims_registry": ".agents/CLAIMS.json",
+  "receipt_tool": ".agents/bin/gate-receipt.sh",
   "commands": {
     "bend_version": "bend version",
     "bend_guide": "bend guide",
-    "object_proof": "bend PROOF.bend"
+    "object_proof": "bend PROOF.bend",
+    "claim_explain": ".agents/bin/gate-receipt.sh explain <claim_id>",
+    "claim_hash": ".agents/bin/gate-receipt.sh hash <claim_id>",
+    "receipt_status": ".agents/bin/gate-receipt.sh status <claim_id> <receipt.json>"
   },
   "artifacts": {
     "LAW.bend": {
@@ -32,6 +37,11 @@
       "role": "experiment_contract",
       "owner": "project",
       "agent_edit": "explicit_new_experiment_only"
+    },
+    ".agents/CLAIMS.json": {
+      "role": "claim_dependency_registry",
+      "owner": "project",
+      "agent_edit": true
     },
     "CORRECTNESS.md": {
       "role": "claim_boundary",
@@ -71,6 +81,7 @@
     "correctness": {
       "read": [
         "CORRECTNESS.md",
+        ".agents/CLAIMS.json",
         "relevant evidence source"
       ],
       "first_gate": "X"
@@ -100,6 +111,7 @@
       "read": [
         "INTENT.md",
         "CORRECTNESS.md",
+        ".agents/CLAIMS.json",
         "provenance evidence"
       ],
       "first_gate": "V"

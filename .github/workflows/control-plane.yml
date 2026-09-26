@@ -11,6 +11,9 @@ on:
       - 'AGENTS.md'
       - '.agents/MANIFEST.json'
       - '.agents/TASK_TEMPLATE.md'
+      - '.agents/CLAIMS.json'
+      - '.agents/bin/**'
+      - 'evidence/**'
       - '.agents/skills/bend2-official-workflow/**'
       - '.github/workflows/control-plane.yml'
   pull_request:
@@ -23,6 +26,9 @@ on:
       - 'AGENTS.md'
       - '.agents/MANIFEST.json'
       - '.agents/TASK_TEMPLATE.md'
+      - '.agents/CLAIMS.json'
+      - '.agents/bin/**'
+      - 'evidence/**'
       - '.agents/skills/bend2-official-workflow/**'
       - '.github/workflows/control-plane.yml'
   workflow_dispatch:
@@ -40,10 +46,45 @@ jobs:
         run: |
           set -euo pipefail
           jq -e '.schema_version == 1 and .control_root == "SYSTEM.md"' .agents/MANIFEST.json >/dev/null
-          for f in SYSTEM.md INTENT.md MODEL.md DECISIONS.md ROADMAP.md AGENTS.md .agents/TASK_TEMPLATE.md; do
+          jq -e '.schema_version == 1 and (.claims | length) >= 3' .agents/CLAIMS.json >/dev/null
+          for f in SYSTEM.md INTENT.md MODEL.md DECISIONS.md ROADMAP.md AGENTS.md .agents/TASK_TEMPLATE.md evidence/README.md; do
             test -s "$f"
           done
+          test -x .agents/bin/gate-receipt.sh
           grep -F 'SYSTEM.md' AGENTS.md >/dev/null
           grep -F 'LAW.bend' MODEL.md >/dev/null
           grep -F 'LAWS.bend' MODEL.md >/dev/null
           grep -F 'benchmarks/research_contract.json' MODEL.md >/dev/null
+          while IFS= read -r claim; do
+            .agents/bin/gate-receipt.sh hash "$claim" >/dev/null
+          done < <(jq -r '.claims | keys[]' .agents/CLAIMS.json)
+
+      - name: Test receipt freshness and invalidation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/gate-receipts
+          evidence_uri="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          .agents/bin/gate-receipt.sh emit             control.topology success             "control topology validation + receipt freshness mutation"             "github-actions:ubuntu-24.04"             "$evidence_uri"             build/gate-receipts/control.topology.json -
+          .agents/bin/gate-receipt.sh status control.topology build/gate-receipts/control.topology.json |
+            jq -e '.status == "fresh"' >/dev/null
+
+          cp SYSTEM.md "$RUNNER_TEMP/SYSTEM.md"
+          printf '\nreceipt-staleness-probe\n' >> SYSTEM.md
+          set +e
+          stale="$(
+            .agents/bin/gate-receipt.sh status control.topology build/gate-receipts/control.topology.json
+          )"
+          stale_code=$?
+          set -e
+          test "$stale_code" -ne 0
+          printf '%s\n' "$stale" | jq -e '.status == "stale"' >/dev/null
+          mv "$RUNNER_TEMP/SYSTEM.md" SYSTEM.md
+
+          .agents/bin/gate-receipt.sh status control.topology build/gate-receipts/control.topology.json |
+            jq -e '.status == "fresh"' >/dev/null
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gate-receipt-control-topology
+          path: build/gate-receipts/control.topology.json

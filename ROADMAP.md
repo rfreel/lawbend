@@ -16,11 +16,9 @@ Status: established.
 
 ## M1 — Coherent control tower
 
-Status: this change.
+Status: implemented.
 
-Deliver:
-
-- one control root (`SYSTEM.md`);
+- one control root;
 - explicit intent and mathematical/control model;
 - task gate algebra;
 - orthogonal shallow starting paths;
@@ -29,47 +27,29 @@ Deliver:
 - impact-aware CI;
 - corrected Bend execution guidance.
 
-Acceptance:
-
-- an agent can identify its minimal read set and required gates without reading
-  the repository linearly;
-- documentation-only changes do not launch the heavy Keccak research loop;
-- meta-law, object law, and experiment contract are explicitly distinguished.
-
 ## M2 — Dependency-aware gate receipts
 
-Next.
+Status: implemented.
 
-Goal: make "what must rerun?" mechanically inspectable without building a large
-framework.
+Deliver:
 
-Candidate design:
-
-```
-receipt = {
-  claim_id,
-  gate,
-  source_tree,
-  dependency_hashes,
-  tool_version,
-  command,
-  result,
-  evidence_uri
-}
-```
-
-Start with CI-produced JSON for proof/validation/benchmark runs. Do not build a
-database until at least two consumers need cross-run queries.
+- `.agents/CLAIMS.json` claim/dependency registry;
+- `.agents/bin/gate-receipt.sh` for explain/hash/emit/status;
+- aggregate dependency hashes plus per-file Git blob identities;
+- control-plane mutation test proving fresh → stale → fresh behavior;
+- CI receipt artifacts for control topology, immutable meta-law, and Keccak
+  research gate.
 
 Acceptance:
 
-- a changed artifact can identify which receipts are stale;
-- unchanged independent gates can be reused rather than rerun;
-- receipts never self-certify the truth of an external specification.
+- a changed dependency makes the corresponding receipt stale;
+- restoration makes it fresh again;
+- unrelated claims retain independent dependency hashes;
+- receipts carry explicit scope and do not self-certify external truth.
 
 ## M3 — Law-backed project initializer
 
-Next after M2 or independently if demanded.
+Next.
 
 Create a minimal initializer for new proof projects:
 
@@ -81,28 +61,32 @@ PROOF.bend
 TRUST.md
 AGENTS.md
 .agents/MANIFEST.json
+.agents/CLAIMS.json
+.agents/bin/gate-receipt.sh
 .github/workflows/proof.yml
 ```
 
-The initializer should encode the same four-stage contract:
+The initializer should encode:
 
 ```
 intent → mathematical model → formal statement → proof
+                     \
+                      → external evidence
 ```
-
-with external evidence as a separate branch, not an extra theorem.
 
 Acceptance:
 
-- generated project has one command that checks all formal laws;
+- generated project has one Bend command that checks all formal laws;
 - laws are human-owned by construction;
-- the agent receives a minimal task-routing map.
+- agent receives a minimal routing map;
+- formal and external claims have separate dependency receipts;
+- a fresh agent can complete a small proof task using only generated guidance.
 
 ## M4 — Failure-indexed proof ergonomics
 
-Only after repeated proof work exposes stable failure classes.
+After M3 adversarial use exposes stable failure classes.
 
-Accrete a small catalog:
+Accrete only observed classes:
 
 - parser/syntax mismatch;
 - quantity/affinity mismatch;
@@ -112,14 +96,13 @@ Accrete a small catalog:
 - wrong law/spec;
 - tooling/version mismatch.
 
-Each entry must map a diagnostic to the cheapest next discriminator. Avoid
-generic "tips"; keep only failures repeatedly observed in real work.
+Each entry maps a diagnostic to the cheapest next discriminator.
 
 ## M5 — Representation bridge library
 
-Only where multiple projects need the same bridge shapes.
+Only when multiple projects consume the same bridge shapes.
 
-Candidate reusable laws:
+Candidates:
 
 - encode/decode round trip;
 - operation homomorphism;
@@ -127,18 +110,16 @@ Candidate reusable laws:
 - public API refinement;
 - state-machine simulation.
 
-Do not abstract a one-off proof merely because it looks reusable.
-
 ## M6 — Agent accretion loop
 
 Continuously:
 
 1. task closes;
 2. classify lesson as transient or durable;
-3. durable decision goes to `DECISIONS.md`;
-4. detailed failure/provenance goes to `AFTER_ACTION_REPORT.md`;
-5. repeated route improvement updates manifest/system docs;
+3. durable decision → `DECISIONS.md`;
+4. detailed failure/provenance → `AFTER_ACTION_REPORT.md`;
+5. repeated route improvement → manifest/system docs;
 6. delete superseded duplicate instructions.
 
-The metric is not document count. It is lower future orientation cost with equal
-or better claim precision.
+Metric: lower future orientation and validation cost at equal or better claim
+precision.
