@@ -1,5 +1,7 @@
 # Bend research thread: index and after-action report
 
+> **Historical evidence archive.** Ordinary agent work should start at [SYSTEM.md](SYSTEM.md), not here. Stable reusable lessons are promoted to [DECISIONS.md](DECISIONS.md); this file retains chronology, counterevidence, and provenance for forensic use.
+
 **Scope:** Conversation through 2026-09-24 and the verified `rfreel/lawbend` build of 2026-09-23. This report separates the user's requests, code-level derivations, observed checks, and unresolved claims. A request is not evidence that its proposed approach works. Earlier discussion is indexed by topic because the available thread contains user prompts, not the full assistant replies or their original artifacts.
 
 ## Thread index

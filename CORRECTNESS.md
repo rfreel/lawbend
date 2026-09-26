@@ -1,5 +1,23 @@
 # Correctness claims and boundaries
 
+## Claim map
+
+The repository separates claim classes so that one passing gate cannot silently
+upgrade another:
+
+| Claim class | Current evidence | What it establishes |
+| --- | --- | --- |
+| Formal | `LAWS.bend` + `PROOF.bend` | public API refinement under Bend/Base assumptions |
+| Empirical | independent digest comparisons in validation | finite observed agreement at stated inputs/backends |
+| Operational | clean-checkout build/run gates | the tested entry path executed in that environment |
+| Performance | pinned raw benchmark samples | scoped timing ratios on stated workloads/host |
+| Provenance | source/tool/reference hashes and pins | identity/reproducibility of the tested materials |
+| Security | none claimed | no collision, preimage, constant-time, compiler, or hardware theorem |
+
+The dependency and gate model is defined in [SYSTEM.md](SYSTEM.md) and
+[MODEL.md](MODEL.md). The sections below remain the detailed Keccak claim
+boundary.
+
 ## Full public packed-input sponge refinement
 
 `bend PROOF.bend` now checks `Laws.ethereum_keccak256`:

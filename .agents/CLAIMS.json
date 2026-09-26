@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "claims": {
+    "control.topology": {
+      "gates": [
+        "M",
+        "V"
+      ],
+      "description": "Agent control topology is internally consistent and machine-routable.",
+      "scope": "Repository control documents and routing metadata only; no Keccak semantic claim.",
+      "dependencies": [
+        "SYSTEM.md",
+        "INTENT.md",
+        "MODEL.md",
+        "DECISIONS.md",
+        "ROADMAP.md",
+        "AGENTS.md",
+        ".agents/MANIFEST.json",
+        ".agents/TASK_TEMPLATE.md",
+        ".agents/CLAIMS.json",
+        ".agents/bin/gate-receipt.sh",
+        ".github/workflows/control-plane.yml"
+      ]
+    },
+    "meta-law.integrity": {
+      "gates": [
+        "M",
+        "V"
+      ],
+      "description": "The canonical meta-law has the anchored blob identity and reaches the expected nine-open-law checker diagnostic without additional errors.",
+      "scope": "LAW.bend identity and checker shape only; the nine open laws are intentionally not proven here.",
+      "dependencies": [
+        "LAW.bend",
+        "LAW.IMMUTABLE",
+        ".agents/CLAIMS.json",
+        ".agents/bin/gate-receipt.sh",
+        ".github/workflows/law-immutability.yml"
+      ]
+    },
+    "keccak.research-gate": {
+      "gates": [
+        "F",
+        "X",
+        "O",
+        "V"
+      ],
+      "description": "The existing public Keccak proof, finite independent validation, mutation rejection, and isolated research smoke trial pass under the pinned research contract.",
+      "scope": "Existing research_validate --mutations plus the configured smoke research_loop. This does not establish the full <=2x performance target.",
+      "dependencies": [
+        "src",
+        "spec",
+        "proofs",
+        "tests",
+        "tools",
+        "LAWS.bend",
+        "PROOF.bend",
+        "main.bend",
+        "keccak.bend",
+        "package.bend",
+        "research_loop.py",
+        "research_validate.py",
+        "pyproject.toml",
+        "uv.lock",
+        "benchmarks/research_contract.json",
+        "benchmarks/source-manifest.json",
+        "benchmarks/driver.bend",
+        "benchmarks/xkcp.c",
+        ".agents/skills/bend-build",
+        ".agents/CLAIMS.json",
+        ".agents/bin/gate-receipt.sh",
+        ".github/workflows/keccak.yml"
+      ]
+    }
+  }
+}

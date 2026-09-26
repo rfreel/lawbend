@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "control_root": "SYSTEM.md",
+  "intent": "INTENT.md",
+  "model": "MODEL.md",
+  "decisions": "DECISIONS.md",
+  "roadmap": "ROADMAP.md",
+  "task_template": ".agents/TASK_TEMPLATE.md",
+  "claims_registry": ".agents/CLAIMS.json",
+  "receipt_tool": ".agents/bin/gate-receipt.sh",
+  "commands": {
+    "bend_version": "bend version",
+    "bend_guide": "bend guide",
+    "object_proof": "bend PROOF.bend",
+    "claim_explain": ".agents/bin/gate-receipt.sh explain <claim_id>",
+    "claim_hash": ".agents/bin/gate-receipt.sh hash <claim_id>",
+    "receipt_status": ".agents/bin/gate-receipt.sh status <claim_id> <receipt.json>"
+  },
+  "artifacts": {
+    "LAW.bend": {
+      "role": "meta_law",
+      "owner": "human",
+      "agent_edit": false,
+      "anchor": "LAW.IMMUTABLE"
+    },
+    "LAWS.bend": {
+      "role": "object_laws",
+      "owner": "human",
+      "agent_edit": "only_on_explicit_requirements_change"
+    },
+    "PROOF.bend": {
+      "role": "object_proof",
+      "owner": "agent",
+      "agent_edit": true
+    },
+    "benchmarks/research_contract.json": {
+      "role": "experiment_contract",
+      "owner": "project",
+      "agent_edit": "explicit_new_experiment_only"
+    },
+    ".agents/CLAIMS.json": {
+      "role": "claim_dependency_registry",
+      "owner": "project",
+      "agent_edit": true
+    },
+    "CORRECTNESS.md": {
+      "role": "claim_boundary",
+      "owner": "project",
+      "agent_edit": true
+    },
+    "AFTER_ACTION_REPORT.md": {
+      "role": "history",
+      "owner": "project",
+      "default_read": false
+    }
+  },
+  "paths": {
+    "intent": {
+      "read": [
+        "INTENT.md",
+        "MODEL.md"
+      ],
+      "first_gate": "H"
+    },
+    "proof": {
+      "read": [
+        "LAWS.bend",
+        "PROOF.bend",
+        "relevant spec/ and proofs/"
+      ],
+      "first_gate": "F"
+    },
+    "implementation": {
+      "read": [
+        "INTENT.md",
+        "public API",
+        "relevant src/ and spec/"
+      ],
+      "first_gate": "O"
+    },
+    "correctness": {
+      "read": [
+        "CORRECTNESS.md",
+        ".agents/CLAIMS.json",
+        "relevant evidence source"
+      ],
+      "first_gate": "X"
+    },
+    "performance": {
+      "read": [
+        "benchmarks/OPTIMIZATION.md",
+        "benchmarks/research_contract.json"
+      ],
+      "first_gate": "P"
+    },
+    "research": {
+      "read": [
+        ".agents/skills/bend-build/references/research-loops.md",
+        "benchmarks/research_contract.json"
+      ],
+      "first_gate": "X"
+    },
+    "debugging": {
+      "read": [
+        "failing observation",
+        "owning layer"
+      ],
+      "first_gate": "smallest_discriminator"
+    },
+    "release": {
+      "read": [
+        "INTENT.md",
+        "CORRECTNESS.md",
+        ".agents/CLAIMS.json",
+        "provenance evidence"
+      ],
+      "first_gate": "V"
+    },
+    "tooling": {
+      "read": [
+        "AGENTS.md",
+        "pinned toolchain source"
+      ],
+      "first_gate": "approved_executor"
+    }
+  },
+  "gate_classes": {
+    "H": "intent/authority",
+    "M": "model",
+    "F": "formal",
+    "X": "external_empirical",
+    "O": "operational",
+    "P": "performance",
+    "V": "provenance",
+    "A": "acceptance"
+  },
+  "resource_order": [
+    "targeted_read",
+    "static_check",
+    "focused_proof_or_test",
+    "finite_independent_validation",
+    "build_runtime",
+    "full_validation",
+    "benchmark",
+    "external_confirmation"
+  ],
+  "accretion": {
+    "durable": "DECISIONS.md",
+    "historical": "AFTER_ACTION_REPORT.md",
+    "promote": [
+      "architectural_choice",
+      "expensive_failure_mode",
+      "invalidation_rule",
+      "trusted_execution_path",
+      "repeated_workflow_improvement"
+    ],
+    "do_not_promote": [
+      "transient_debug_log",
+      "duplicated_instruction",
+      "unsupported_conclusion"
+    ]
+  }
+}

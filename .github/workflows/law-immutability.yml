@@ -2,7 +2,20 @@ name: law-immutability
 
 on:
   push:
+    paths:
+      - 'LAW.bend'
+      - 'LAW.IMMUTABLE'
+      - '.agents/CLAIMS.json'
+      - '.agents/bin/gate-receipt.sh'
+      - '.github/workflows/law-immutability.yml'
   pull_request:
+    paths:
+      - 'LAW.bend'
+      - 'LAW.IMMUTABLE'
+      - '.agents/CLAIMS.json'
+      - '.agents/bin/gate-receipt.sh'
+      - '.github/workflows/law-immutability.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -35,10 +48,23 @@ jobs:
           status=$?
           set -e
           cat bend-check.log
-
-          # LAW.bend is intentionally a specification with nine open laws.
-          # Bend therefore exits nonzero, but it must reach the open-law report
-          # rather than a syntax/type error.
           test "$status" -ne 0
           grep -F "9 TODOs found." bend-check.log
-          ! grep -F "Error:" bend-check.log
+          unexpected_errors="$(grep -E '^Error:' bend-check.log | grep -v -F 'Error: 9 TODOs found.' || true)"
+          test -z "$unexpected_errors"
+
+      - name: Emit gate receipt
+        if: always()
+        shell: bash
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          evidence_uri="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          .agents/bin/gate-receipt.sh emit             meta-law.integrity "$RESULT"             "git hash-object LAW.bend; nix run github:lukasl-dev/bend.nix -- LAW.bend"             "nix + Bend checker"             "$evidence_uri"             build/gate-receipts/meta-law.integrity.json -
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gate-receipt-meta-law-integrity
+          path: build/gate-receipts/meta-law.integrity.json
+          if-no-files-found: error

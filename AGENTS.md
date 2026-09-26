@@ -1,25 +1,122 @@
-# Repository instructions for coding agents
+# Agent operating instructions
 
-For Bend design, implementation, performance work, or proof claims in this repository, read [the pinned bend-build skill](.agents/skills/bend-build/SKILL.md) before editing. For an optimization experiment or evidence claim, also read [its research-loop reference](.agents/skills/bend-build/references/research-loops.md). Use this repository copy as the project version; do not silently substitute a newer installed skill or the older upstream GitHub file.
+Start with [SYSTEM.md](SYSTEM.md) and [.agents/MANIFEST.json](.agents/MANIFEST.json).
+Do **not** read the whole repository by default.
 
-The vendored skill is a byte-for-byte snapshot of `bend-build` from the personal skills revision `e03b1f2c4ebaf6eada9f832dbb49583d4c72bc4f`. Its four source files and their hashes are listed in [.agents/skills/bend-build/SHA256SUMS](.agents/skills/bend-build/SHA256SUMS). From the repository root, verify the snapshot with:
+## 1. Orient
+
+For a nontrivial task:
+
+1. identify the requested outcome and explicit non-goals;
+2. select the path in the manifest;
+3. use [.agents/TASK_TEMPLATE.md](.agents/TASK_TEMPLATE.md) as the task capsule;
+4. activate only the claim classes and gates the task needs;
+5. prewalk two to four shallow routes before making a consequential edit.
+
+Expand the read set only when an explicit dependency, contradiction, or failed
+gate requires it.
+
+## 2. Respect authority
+
+- User/human instructions control intent.
+- `LAW.bend` is the content-addressed human meta-law. Do not edit it.
+- `LAWS.bend` is the object-level Keccak requirement. Do not weaken or rewrite
+  it to make a proof pass. A requested law change is a requirements change.
+- `benchmarks/research_contract.json` freezes the current optimization
+  experiment. Changing it creates a different experiment and must be surfaced.
+- `PROOF.bend`, implementation, evidence, and control documents are downstream
+  artifacts; they must conform to the authorities above.
+
+If two authorities appear inconsistent, do not silently reconcile them. Surface
+the mismatch and identify which contract would have to change.
+
+## 3. Bend environment
+
+Before Bend design, implementation, proof, compilation, or benchmark work:
+
+1. run `bend version`;
+2. read the complete `bend guide`;
+3. read the relevant existing Bend files;
+4. use the installed guide as the syntax/behavior authority for that compiler.
+
+If Bend is unavailable locally, use the repository's approved pinned
+GitHub-Actions execution path when possible. A missing local executable is a
+tooling blocker, not permission to substitute Python, C, JavaScript, Lean, or
+another verifier for a Bend proof claim.
+
+For implementation/performance work, also read the pinned
+[bend-build skill](.agents/skills/bend-build/SKILL.md). For optimization
+research, read its
+[research-loop reference](.agents/skills/bend-build/references/research-loops.md).
+For Bend workflow details, read
+[the Bend 2 workflow skill](.agents/skills/bend2-official-workflow/SKILL.md).
+
+Verify the vendored bend-build snapshot when its contents are relevant:
 
 ```sh
 sha256sum --check .agents/skills/bend-build/SHA256SUMS
 ```
 
-The checksum checks consistency with the committed pin; it does not independently prove that the skill's advice or the Keccak implementation is correct. When changing the pinned skill, review the source revision and all changed files together, update the checksums, and run the repository's proof/reference and clean-checkout gates before extending a claim. User instructions and higher-priority instructions retain their precedence.
+## 4. Execute cheap discriminators first
+
+Prefer:
+
+```
+targeted read
+< static check
+< focused proof/test
+< finite independent validation
+< build/runtime
+< full validation
+< benchmark
+< external clean-machine confirmation
+```
+
+Stop once a failure already decides the live hypothesis. Re-run only gates whose
+dependencies changed.
+
+## 5. Claim discipline
+
+Keep these distinct:
+
+- formal derivation;
+- external observation;
+- actual runtime behavior;
+- performance measurement;
+- provenance/reproducibility;
+- authorized acceptance.
+
+A passing `bend PROOF.bend` establishes only its stated laws under the stated
+Bend/Base assumptions. Finite vectors remain finite. Benchmarks remain scoped to
+their workloads and hosts.
+
+## 6. Finish and accrete
+
+Before reporting completion:
+
+- required gate vector passes;
+- exact claim boundary is stated;
+- affected evidence corresponds to the shipped source;
+- blockers and unsupported extensions are explicit;
+- any reusable architectural lesson is promoted once to `DECISIONS.md`.
+
+Use `AFTER_ACTION_REPORT.md` only for chronology, provenance, and failure
+forensics. It is not required reading for ordinary tasks.
 
 
-## Bend 2 workflow
+## 7. Reuse valid receipts
 
-Before any Bend design, implementation, proof, compilation, or benchmark work, also read
-[the Bend 2 workflow skill](.agents/skills/bend2-official-workflow/SKILL.md). It is
-adapted from the current bend2.dev agent guidance and records its provenance in
-[.agents/skills/bend2-official-workflow/SOURCE.md](.agents/skills/bend2-official-workflow/SOURCE.md).
+Before rerunning an expensive gate, check whether a receipt exists for its
+registered claim:
 
-- Before writing Bend, run `bend --version` and read all of `bend guide`.
-- Keep human-owned requirements in `LAWS.bend` or the designated immutable law file; do not weaken them to pass a check.
-- Implement proofs in `PROOF.bend` when that split is used, and require `bend PROOF.bend` to pass before claiming the laws hold.
-- Check changed entry points and the actual deployment target; measure parallel speedup when making performance claims.
-- Report commands, outputs, compiler version, and open holes; a passing proof covers only its stated laws.
+```sh
+.agents/bin/gate-receipt.sh explain <claim>
+.agents/bin/gate-receipt.sh status <claim> <receipt.json>
+```
+
+- `fresh` → the declared dependency state is unchanged; reuse the observation
+  if its original scope still answers the task.
+- `stale` → rerun that claim's gate.
+- no receipt → run the cheapest gate capable of producing one.
+
+Never use freshness to widen claim scope or change evidence class.
