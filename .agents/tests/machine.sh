@@ -9,5 +9,7 @@ grep -Fx 'accepted:0:1' "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'accepted:2:3' "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'exhausted:3:4' "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'exhausted:0:1' "$RUNNER_TEMP/task-machine.log"
-test "$(grep -c '^blocked:' "$RUNNER_TEMP/task-machine.log")" -eq 2
+test "$(grep -c '^blocked:' "$RUNNER_TEMP/task-machine.log")" -eq 3
+test "$(grep -c '^verify$' "$RUNNER_TEMP/task-machine.log")" -eq 12
+test "$(grep -c '^repair$' "$RUNNER_TEMP/task-machine.log")" -eq 6
 echo 'BEND TASK MACHINE CHECKS PASS'
