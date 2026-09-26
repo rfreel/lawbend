@@ -1,0 +1,33 @@
+name: Conditional net edge proof
+
+on:
+  push:
+    branches:
+      - proof/conditional-net-edge
+    paths:
+      - 'proofs/conditional-net-edge/**'
+      - '.github/workflows/conditional-net-edge.yml'
+  pull_request:
+    paths:
+      - 'proofs/conditional-net-edge/**'
+      - '.github/workflows/conditional-net-edge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Bend 2.0.27
+        run: |
+          curl -fL --retry 3 -o bend.tar.gz https://github.com/bendlang/bend/releases/download/v2.0.27/bend-2.0.27-linux-x64.tar.gz
+          echo '58adc86af6605ed0c48f7d84e4c23028f78893ce4a867a20a4f004b11582687b  bend.tar.gz' | sha256sum -c -
+          mkdir -p "$HOME/.bend"
+          tar -xzf bend.tar.gz -C "$HOME/.bend" --strip-components=1
+          "$HOME/.bend/bin/bend" --version
+      - name: Read Bend guide
+        run: "$HOME/.bend/bin/bend" guide
