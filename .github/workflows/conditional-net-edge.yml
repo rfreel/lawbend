@@ -30,4 +30,5 @@ jobs:
           tar -xzf bend.tar.gz -C "$HOME/.bend" --strip-components=1
           "$HOME/.bend/bin/bend" --version
       - name: Read Bend guide
-        run: "$HOME/.bend/bin/bend" guide
+        run: |
+          "$HOME/.bend/bin/bend" guide
