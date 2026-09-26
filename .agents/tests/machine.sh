@@ -4,6 +4,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT/agent-machine" 2>/dev/null || { echo 'FAIL: reusable Bend task machine is missing' >&2; exit 1; }
 : "${BEND:?official Bend executable required}"
 "$BEND" PROOF.bend
+"$BEND" DOCS_MODEL.bend
 "$BEND" TESTS.bend | tee "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'accepted:0:1' "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'accepted:2:3' "$RUNNER_TEMP/task-machine.log"
@@ -29,9 +30,7 @@ if (cd "$TMP/render" && "$BEND" PROOF.bend) > "$TMP/render/rejected.log" 2>&1; t
 fi
 cat "$TMP/render/rejected.log"
 grep -F 'code_is_always_a_block' "$TMP/render/rejected.log" >/dev/null
-# The user's Exhausted constructor must keep the final defects. Deliberately
-# discard them in a temporary implementation and require the runtime assertion
-# to fail by name. A parse error, missing binary or timeout is not a pass.
+# Discard final defects in an isolated implementation; require named rejection.
 cp -- ./*.bend "$TMP/evidence/"
 sed 's/Exhausted{candidate, evidence, defects, audit}/Exhausted{candidate, evidence, Nil{}, audit}/' MACHINE.bend > "$TMP/evidence/MACHINE.bend"
 if cmp -s MACHINE.bend "$TMP/evidence/MACHINE.bend"; then
@@ -44,6 +43,5 @@ if (cd "$TMP/evidence" && "$BEND" EVIDENCE_TESTS.bend) > "$TMP/evidence/rejected
 fi
 cat "$TMP/evidence/rejected.log"
 grep -F 'FAIL: zero-fuel-exhausted' "$TMP/evidence/rejected.log" >/dev/null
-# Re-run the unmodified implementation after the rejection probe.
 "$BEND" EVIDENCE_TESTS.bend
 echo 'BEND TASK MACHINE CHECKS PASS'

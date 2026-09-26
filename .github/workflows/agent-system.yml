@@ -17,6 +17,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash .agents/tests/receipts.sh
+      - name: Confirm running-state regression fails on the previous implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 3a17e556324dbd9279d1b26bb5000bee3da2f213
+          git show 3a17e556324dbd9279d1b26bb5000bee3da2f213:.agents/bin/gate-receipt.sh > "$RUNNER_TEMP/legacy-receipt.sh"
+          if GATE_RECEIPT_SOURCE="$RUNNER_TEMP/legacy-receipt.sh" bash .agents/tests/receipt-context.sh > "$RUNNER_TEMP/legacy-check.log" 2>&1; then
+            cat "$RUNNER_TEMP/legacy-check.log"
+            echo 'Legacy implementation unexpectedly passed the regression' >&2
+            exit 1
+          fi
+          grep -F 'FAIL: running gate exposed an earlier receipt' "$RUNNER_TEMP/legacy-check.log"
       - run: bash .agents/tests/receipt-context.sh
   initializer:
     runs-on: ubuntu-24.04

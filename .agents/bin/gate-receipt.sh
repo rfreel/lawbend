@@ -37,9 +37,7 @@ snapshot() {
     if [[ -f "$ROOT/$dep" ]]; then
       printf '%s\0' "$dep" >> "$WORK/paths"
     elif [[ -d "$ROOT/$dep" ]]; then
-      # Retain tracked deleted paths; they must fail below, never disappear.
       git -C "$ROOT" ls-files -z --cached -- "$dep" >> "$WORK/paths" || die "cannot inventory $dep"
-      # Selected directories include new and ignored files as dependencies.
       find "$ROOT/$dep" -mindepth 1 \( -type f -o -type l \) -print0 > "$WORK/found" || die "cannot traverse $dep"
       while IFS= read -r -d '' full; do
         printf '%s\0' "${full#"$ROOT"/}" >> "$WORK/paths"
@@ -67,7 +65,7 @@ snapshot() {
 basis_hash() { jq -cS . "$1" | sha256sum | cut -d' ' -f1; }
 write_receipt() {
   local id="$1" result="$2" command="$3" tool="$4" uri="$5" out="$6" recording="$7" tmp
-  case "$result" in success|failure|blocked|cancelled|timeout|unstable) ;; *) die "invalid result: $result";; esac
+  case "$result" in running|success|failure|blocked|cancelled|timeout|unstable) ;; *) die "invalid result: $result";; esac
   [[ -n "$tool" && -n "$command" && -n "$uri" ]] || die 'tool, command and evidence location must be explicit'
   mkdir -p -- "$(dirname -- "$out")"
   tmp="$(mktemp "${out}.tmp.XXXXXX")"
@@ -101,7 +99,7 @@ receipt_status() {
     (.basis.dependencies | length) > 0 and .dependencies == .basis.dependencies and
     .gates == .basis.contract.gates and .scope == .basis.contract.scope and
     (.dependency_set_hash | type) == "string" and
-    (.result | IN("success","failure","blocked","cancelled","timeout","unstable")) and
+    (.result | IN("running","success","failure","blocked","cancelled","timeout","unstable")) and
     (.recording | IN("recorded","executed"))' "$receipt" >/dev/null || die 'invalid or legacy receipt; rerun the gate'
   jq '.basis' "$receipt" > "$WORK/stored.json" || die 'cannot read stored inventory'
   stored="$(jq -r '.dependency_set_hash' "$receipt")"
@@ -139,6 +137,8 @@ run_gate() {
   before="$(basis_hash "$WORK/current.json")"
   mkdir -p -- "$(dirname -- "$out")"
   printf -v command '%q ' "$@"
+  # Invalidate an earlier success before execution; interruption cannot expose it as current.
+  write_receipt "$id" running "$command" "$tool" "$uri" "$out" executed
   "$@" > "${out}.log" 2>&1 || code=$?
   cat -- "${out}.log"
   snapshot "$id"

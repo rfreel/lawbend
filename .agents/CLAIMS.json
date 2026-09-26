@@ -27,9 +27,9 @@
     },
     "task-machine.protocol": {
       "gates": ["O", "V"],
-      "description": "Concrete typed protocol cases execute with expected call counts, final evidence/defect retention, evidence binding and rejection behavior.",
-      "scope": "Local fixtures, code-block proof rejection and runtime rejection of discarded final defects; not independent-world observation or universal generalization.",
-      "dependencies": ["agent-machine/MACHINE.bend", "agent-machine/RENDER.bend", "agent-machine/LAWS.bend", "agent-machine/PROOF.bend", "agent-machine/TESTS.bend", "agent-machine/EVIDENCE_TESTS.bend", "agent-machine/RENDER_TESTS.bend", ".agents/tests/machine.sh", ".github/workflows/task-machine.yml"]
+      "description": "Concrete typed protocol cases execute with expected call counts, final evidence/defect retention, evidence binding and rejection behavior; Docs adapter datatypes check.",
+      "scope": "Local fixtures, code-block proof rejection, runtime rejection of discarded final defects and adapter datatypes; not independent-world observation or universal generalization.",
+      "dependencies": ["agent-machine/MACHINE.bend", "agent-machine/RENDER.bend", "agent-machine/LAWS.bend", "agent-machine/PROOF.bend", "agent-machine/TESTS.bend", "agent-machine/EVIDENCE_TESTS.bend", "agent-machine/RENDER_TESTS.bend", "agent-machine/DOCS_MODEL.bend", ".agents/tests/machine.sh", ".github/workflows/task-machine.yml"]
     },
     "initializer.consumer": {
       "gates": ["F", "O", "V"],
