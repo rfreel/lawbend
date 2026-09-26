@@ -4,6 +4,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT/agent-machine" 2>/dev/null || { echo 'FAIL: reusable Bend task machine is missing' >&2; exit 1; }
 : "${BEND:?official Bend executable required}"
 "$BEND" PROOF.bend
+"$BEND" DOCS_MODEL.bend
 "$BEND" TESTS.bend | tee "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'accepted:0:1' "$RUNNER_TEMP/task-machine.log"
 grep -Fx 'accepted:2:3' "$RUNNER_TEMP/task-machine.log"
@@ -15,8 +16,6 @@ test "$(grep -c '^repair$' "$RUNNER_TEMP/task-machine.log")" -eq 6
 "$BEND" RENDER_TESTS.bend | tee "$RUNNER_TEMP/render-machine.log"
 grep -Fx 'render-code:npm test' "$RUNNER_TEMP/render-machine.log"
 grep -Fx 'render-text:example prose' "$RUNNER_TEMP/render-machine.log"
-# The expected relation comes from the user's supplied code-block law.
-# Mutate implementation only; retain the law and require a genuine checker error.
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 cp -- ./*.bend "$TMP/"

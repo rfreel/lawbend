@@ -4,7 +4,8 @@ SOURCE="$(cd "$(dirname "$0")/.." && pwd)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/repo/.agents/bin" "$TMP/repo/src"
-cp "$SOURCE/bin/gate-receipt.sh" "$TMP/repo/.agents/bin/"
+cp "${GATE_RECEIPT_SOURCE:-$SOURCE/bin/gate-receipt.sh}" "$TMP/repo/.agents/bin/gate-receipt.sh"
+chmod +x "$TMP/repo/.agents/bin/gate-receipt.sh"
 cd "$TMP/repo"
 git init -q
 git config user.email fixture@example.invalid
@@ -22,6 +23,12 @@ export GATE_CONTEXT_ID=fixture-context-A
 if "$R" status fixture "$OUT" fixture-tool-A other-context; then echo 'FAIL: changed context reused' >&2; exit 1; fi
 if "$R" status fixture "$OUT" other-tool fixture-context-A; then echo 'FAIL: changed tool reused' >&2; exit 1; fi
 echo 'PASS: reuse requires explicit matching tool and context'
+
+if ! "$R" run fixture "$OUT" fixture-tool-A fixture://local -- bash -c 'jq -e ".result == \"running\"" "$1"' _ "$OUT"; then
+  echo 'FAIL: running gate exposed an earlier receipt' >&2
+  exit 1
+fi
+echo 'PASS: running gate cannot expose an earlier success'
 
 set +e
 "$R" run fixture "$OUT" fixture-tool-A fixture://local -- bash -c 'exit 7'

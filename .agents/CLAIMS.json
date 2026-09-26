@@ -27,9 +27,9 @@
     },
     "task-machine.protocol": {
       "gates": ["O", "V"],
-      "description": "Concrete typed protocol cases execute with expected call counts, evidence binding and rejection behavior.",
-      "scope": "Local fixtures and the code-block implementation mutation, not independent-world observation or universal generalization.",
-      "dependencies": ["agent-machine/MACHINE.bend", "agent-machine/RENDER.bend", "agent-machine/LAWS.bend", "agent-machine/PROOF.bend", "agent-machine/TESTS.bend", "agent-machine/RENDER_TESTS.bend", ".agents/tests/machine.sh", ".github/workflows/task-machine.yml"]
+      "description": "Concrete typed protocol cases execute with expected call counts, evidence binding and rejection behavior; Docs adapter datatypes check.",
+      "scope": "Local fixtures, adapter datatypes and the code-block mutation, not independent-world observation or universal generalization.",
+      "dependencies": ["agent-machine/MACHINE.bend", "agent-machine/RENDER.bend", "agent-machine/LAWS.bend", "agent-machine/PROOF.bend", "agent-machine/TESTS.bend", "agent-machine/RENDER_TESTS.bend", "agent-machine/DOCS_MODEL.bend", ".agents/tests/machine.sh", ".github/workflows/task-machine.yml"]
     },
     "initializer.consumer": {
       "gates": ["F", "O", "V"],
