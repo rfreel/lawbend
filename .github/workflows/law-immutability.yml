@@ -50,4 +50,8 @@ jobs:
           # rather than a syntax/type error.
           test "$status" -ne 0
           grep -F "9 TODOs found." bend-check.log
-          ! grep -F "Error:" bend-check.log
+
+          # Newer Bend builds prefix the expected open-law report with
+          # "Error:". Reject only error lines other than that known diagnostic.
+          unexpected_errors="$(grep -E '^Error:' bend-check.log | grep -v -F 'Error: 9 TODOs found.' || true)"
+          test -z "$unexpected_errors"
