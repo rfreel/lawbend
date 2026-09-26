@@ -86,3 +86,15 @@ remains the detailed evidence archive.
 documentation changes wastes resources without increasing confidence.
 
 **Consequence:** workflow path filters mirror the claim-dependency graph.
+
+
+## D-0009 — CI routing is itself observable
+
+**Decision:** validate the control plane with a documentation-only commit after
+installing impact-aware workflow filters.
+
+**Reason:** path-filter intent is not enough; the Actions run set is the direct
+observation of whether routing behaves as designed.
+
+**Consequence:** a control-doc-only change should run the lightweight control
+gate and skip the Keccak research and immutable-law gates.
