@@ -1,122 +1,38 @@
 # Agent operating instructions
 
-Start with [SYSTEM.md](SYSTEM.md) and [.agents/MANIFEST.json](.agents/MANIFEST.json).
-Do **not** read the whole repository by default.
+Start with SYSTEM.md and .agents/MANIFEST.json. Select the smallest relevant route; do not read the whole repository. Use .agents/TASK_TEMPLATE.md for nontrivial work, without requiring a permanent file for a small change.
 
-## 1. Orient
+## Authority
 
-For a nontrivial task:
+User instructions control intent. LAW.bend is the content-addressed human meta-law anchored by LAW.IMMUTABLE; do not edit it. LAWS.bend is the Keccak requirement. agent-machine/LAWS.bend states separate task-machine obligations. Do not weaken either to fix a proof. benchmarks/research_contract.json is the current Keccak experiment boundary; changing it creates a different experiment. Surface conflicts rather than silently choosing the easier requirement.
 
-1. identify the requested outcome and explicit non-goals;
-2. select the path in the manifest;
-3. use [.agents/TASK_TEMPLATE.md](.agents/TASK_TEMPLATE.md) as the task capsule;
-4. activate only the claim classes and gates the task needs;
-5. prewalk two to four shallow routes before making a consequential edit.
+## Toolchain and route
 
-Expand the read set only when an explicit dependency, contradiction, or failed
-gate requires it.
+Keccak remains on Bend 2.0.16; the task machine and initializer use 2.0.27. Run `bend version`, read the installed `bend guide`, and inspect the relevant existing code. A proof file does not instantiate every generic runtime path: check the concrete invocation too.
 
-## 2. Respect authority
+Use the pinned .agents/skills/bend-build/SKILL.md for implementation/performance work and its references/research-loops.md for experiments. Verify its snapshot with `sha256sum --check .agents/skills/bend-build/SHA256SUMS`. The .agents/skills/bend2-official-workflow/SKILL.md records tool usage; agent-machine/DIAGNOSTICS.md records observed failures.
 
-- User/human instructions control intent.
-- `LAW.bend` is the content-addressed human meta-law. Do not edit it.
-- `LAWS.bend` is the object-level Keccak requirement. Do not weaken or rewrite
-  it to make a proof pass. A requested law change is a requirements change.
-- `benchmarks/research_contract.json` freezes the current optimization
-  experiment. Changing it creates a different experiment and must be surfaced.
-- `PROOF.bend`, implementation, evidence, and control documents are downstream
-  artifacts; they must conform to the authorities above.
+When local Bend is missing, use an authorized GitHub Actions executor with the pinned official release. No Python, C, JavaScript, Java or alternate prover substitutes for Bend checking. Shell/jq files in this repository only perform installation, filesystem/Git bookkeeping and process orchestration. Existing Keccak external references do not implement a new Bend theorem.
 
-If two authorities appear inconsistent, do not silently reconcile them. Surface
-the mismatch and identify which contract would have to change.
+## Action and recovery
 
-## 3. Bend environment
+Identify the outcome, write/protected sets, active claim classes, and one consequential uncertainty. Compare shallow proof-first, observation-first, implementation-first and tooling-first routes. Execute the cheapest authorized discriminator; do not perform every route. Stop a failed hypothesis when its evidence is decisive. On interruption, read the actual branch head, relevant diff and finished run results before repeating work.
 
-Before Bend design, implementation, proof, compilation, or benchmark work:
+Unknown, blocked, rejected, exhausted and accepted are different states. A tool failure is not a theorem refutation. A timeout is not a negative proof. An unavailable observer does not justify inventing defects. Keep raw evidence and the exact artifact revision.
 
-1. run `bend version`;
-2. read the complete `bend guide`;
-3. read the relevant existing Bend files;
-4. use the installed guide as the syntax/behavior authority for that compiler.
+## Receipt reuse
 
-If Bend is unavailable locally, use the repository's approved pinned
-GitHub-Actions execution path when possible. A missing local executable is a
-tooling blocker, not permission to substitute Python, C, JavaScript, Lean, or
-another verifier for a Bend proof claim.
-
-For implementation/performance work, also read the pinned
-[bend-build skill](.agents/skills/bend-build/SKILL.md). For optimization
-research, read its
-[research-loop reference](.agents/skills/bend-build/references/research-loops.md).
-For Bend workflow details, read
-[the Bend 2 workflow skill](.agents/skills/bend2-official-workflow/SKILL.md).
-
-Verify the vendored bend-build snapshot when its contents are relevant:
+Read evidence/README.md. Use:
 
 ```sh
-sha256sum --check .agents/skills/bend-build/SHA256SUMS
+.agents/bin/gate-receipt.sh explain CLAIM
+.agents/bin/gate-receipt.sh status CLAIM RECEIPT EXPECTED_TOOL EXPECTED_CONTEXT
 ```
 
-## 4. Execute cheap discriminators first
+Require usable=true, a trusted run origin, and scope that still answers the request. Freshness alone is insufficient: a failed run can be fresh. Schema-1 receipts need a new run. `emit` records assertions; `run` executes the command and retains its result. Caller-supplied context labels are not independent verification.
 
-Prefer:
+## Completion
 
-```
-targeted read
-< static check
-< focused proof/test
-< finite independent validation
-< build/runtime
-< full validation
-< benchmark
-< external clean-machine confirmation
-```
+A successful Bend proof covers its declared laws, not external observations, host correctness, performance or observer independence. The task-machine Accepted constructor means the protocol received a revision-matched Pass; it is not human acceptance or empirical truth. Generated tutorial laws are not approved production requirements.
 
-Stop once a failure already decides the live hypothesis. Re-run only gates whose
-dependencies changed.
-
-## 5. Claim discipline
-
-Keep these distinct:
-
-- formal derivation;
-- external observation;
-- actual runtime behavior;
-- performance measurement;
-- provenance/reproducibility;
-- authorized acceptance.
-
-A passing `bend PROOF.bend` establishes only its stated laws under the stated
-Bend/Base assumptions. Finite vectors remain finite. Benchmarks remain scoped to
-their workloads and hosts.
-
-## 6. Finish and accrete
-
-Before reporting completion:
-
-- required gate vector passes;
-- exact claim boundary is stated;
-- affected evidence corresponds to the shipped source;
-- blockers and unsupported extensions are explicit;
-- any reusable architectural lesson is promoted once to `DECISIONS.md`.
-
-Use `AFTER_ACTION_REPORT.md` only for chronology, provenance, and failure
-forensics. It is not required reading for ordinary tasks.
-
-
-## 7. Reuse valid receipts
-
-Before rerunning an expensive gate, check whether a receipt exists for its
-registered claim:
-
-```sh
-.agents/bin/gate-receipt.sh explain <claim>
-.agents/bin/gate-receipt.sh status <claim> <receipt.json>
-```
-
-- `fresh` → the declared dependency state is unchanged; reuse the observation
-  if its original scope still answers the task.
-- `stale` → rerun that claim's gate.
-- no receipt → run the cheapest gate capable of producing one.
-
-Never use freshness to widen claim scope or change evidence class.
+Require the task's actual gates, checked against the submitted revision. Record reusable lessons once at their proper layer. Report missing external adapters and holdout observations explicitly. Do not call self-authored fixtures a blind-agent evaluation or claim a reduction in resource use without comparative measurement.

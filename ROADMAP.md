@@ -1,125 +1,38 @@
 # Agent-system roadmap
 
-The system should evolve by reducing future decision cost, not by accumulating
-more process. Each milestone must remove ambiguity or repeated work for a real
-consumer.
+Authority: the user's four-stage intent/model/statement/proof workflow, authorization to finish the system steps, and the supplied solver/verifier/repair architecture.
 
-## M0 — Existing correctness/research substrate
+## Implemented substrate
 
-Status: established.
+Keccak's public laws, proof, implementation and frozen experiment contract remain unchanged. Root proof claims still use Bend 2.0.16. The agent system has a routing manifest, explicit claim classes and independent evidence boundaries.
 
-- human/meta law anchor;
-- object-level Bend laws and proof;
-- independent finite validation;
-- pinned optimization contract;
-- clean-run evidence and research history.
+## Receipt correctness
 
-## M1 — Coherent control tower
+The first implementation existed at d22f1d2384b092272b8bf301bb69606628bef720. Regression run 36274870340 exposed that deleting a tracked dependency still permitted emission. The new recorder completes and validates an inventory before hashing, tracks newly added files and executable modes, rejects symlinks/corrupt inventories, and distinguishes fresh from usable.
 
-Status: implemented.
+Schema-2 reuse requires a successful executed result, matching dependency/claim/recorder identities, explicit matching tool/context and a trusted origin. This is bookkeeping, not authentication or proof of external truth. Legacy recorded receipts are never automatically promoted.
 
-- one control root;
-- explicit intent and mathematical/control model;
-- task gate algebra;
-- orthogonal shallow starting paths;
-- machine-readable routing manifest;
-- compact durable decision memory;
-- impact-aware CI;
-- corrected Bend execution guidance.
+## Standalone initializer
 
-## M2 — Dependency-aware gate receipts
+`.agents/bin/bend-proof-init.sh NEW_DIRECTORY` copies a GNU/Linux standalone project without overwrite. It preserves the upstream Bend-guide add-zero tutorial as an independent small proof example. The root proof starts open; an included completion example proves the unchanged law. It also includes the separately checked task-machine library.
 
-Status: implemented.
+Human law adoption remains explicit. Generated metadata does not authorize a requirement. Missing external observations remain missing. The initializer has tests for fresh paths, spaces, existing destinations, missing compilers, law drift, invalid proofs and actual recorded checker execution.
 
-Deliver:
+## Reusable Bend task machine
 
-- `.agents/CLAIMS.json` claim/dependency registry;
-- `.agents/bin/gate-receipt.sh` for explain/hash/emit/status;
-- aggregate dependency hashes plus per-file Git blob identities;
-- control-plane mutation test proving fresh → stale → fresh behavior;
-- CI receipt artifacts for control topology, immutable meta-law, and Keccak
-  research gate.
+`agent-machine/` implements the user's typed solve / verify / repair protocol. The added pure subject projection binds evidence to task, contract, artifact and revision. The machine retains evidence and failed attempts; missing/mismatched evidence is Blocked rather than empirical failure. Repeating the same artifact revision after repair stops rather than wasting more verification calls.
 
-Acceptance:
+Formal laws cover internal code-block rendering and terminal evidence/defect preservation. Concrete IO specializations are checked separately. The caller must deploy authentic independent observers and complete criterion checks. No Google Docs or Gemini foreign adapter is included. Nat fuel bounds controller repair steps, not arbitrary adapter duration.
 
-- a changed dependency makes the corresponding receipt stale;
-- restoration makes it fresh again;
-- unrelated claims retain independent dependency hashes;
-- receipts carry explicit scope and do not self-certify external truth.
+## Acceptance still requiring independent observation
 
-## M3 — Law-backed project initializer
+- A genuinely separate agent uses only the generated guidance on a held-out specification.
+- A task/evaluator owner supplies holdout tasks not used to design or repair this machine.
+- A real external adapter reads exact artifact revisions and provides verifiable reports under fixed criteria.
+- Comparative measurements establish any claimed reduction in orientation cost, token use or execution cost.
 
-Next.
+The automated fixture suite is not a substitute for these observations. Do not assign an invented number of turns to them. Integration may ship a precisely scoped tested library without claiming these external criteria are complete.
 
-Create a minimal initializer for new proof projects:
+## Next layers, only with a consumer
 
-```
-INTENT.md
-MODEL.bend or MODEL.md
-LAWS.bend
-PROOF.bend
-TRUST.md
-AGENTS.md
-.agents/MANIFEST.json
-.agents/CLAIMS.json
-.agents/bin/gate-receipt.sh
-.github/workflows/proof.yml
-```
-
-The initializer should encode:
-
-```
-intent → mathematical model → formal statement → proof
-                     \
-                      → external evidence
-```
-
-Acceptance:
-
-- generated project has one Bend command that checks all formal laws;
-- laws are human-owned by construction;
-- agent receives a minimal routing map;
-- formal and external claims have separate dependency receipts;
-- a fresh agent can complete a small proof task using only generated guidance.
-
-## M4 — Failure-indexed proof ergonomics
-
-After M3 adversarial use exposes stable failure classes.
-
-Accrete only observed classes:
-
-- parser/syntax mismatch;
-- quantity/affinity mismatch;
-- termination failure;
-- definitional equality mismatch;
-- missing representation bridge;
-- wrong law/spec;
-- tooling/version mismatch.
-
-Each entry maps a diagnostic to the cheapest next discriminator.
-
-## M5 — Representation bridge library
-
-Only when multiple projects consume the same bridge shapes.
-
-Candidates:
-
-- encode/decode round trip;
-- operation homomorphism;
-- bounds/capacity preservation;
-- public API refinement;
-- state-machine simulation.
-
-## M6 — Agent accretion loop
-
-Continuously:
-
-1. task closes;
-2. classify lesson as transient or durable;
-3. durable decision → `DECISIONS.md`;
-4. detailed failure/provenance → `AFTER_ACTION_REPORT.md`;
-5. repeated route improvement → manifest/system docs;
-6. delete superseded duplicate instructions.
-
-Metric: lower future orientation and validation cost at equal or better claim
-precision.
+Bind a real readback/judgment adapter; authenticate reports and implement deadlines, cancellation and concurrent-revision handling. Add diagnostics only after an observed failure. Factor reusable representation bridges only when a second real task needs them. Keep stable decisions separate from raw history.

@@ -16,7 +16,7 @@ cp -R -- "$TEMPLATE/." "$stage/"
 cp -- "$ROOT/.agents/bin/gate-receipt.sh" "$stage/.agents/bin/gate-receipt.sh"
 cp -- "$ROOT/LICENSE" "$stage/LICENSE"
 mkdir -p "$stage/task-machine"
-cp -- "$ROOT/agent-machine/MACHINE.bend" "$ROOT/agent-machine/RENDER.bend" "$ROOT/agent-machine/LAWS.bend" "$ROOT/agent-machine/PROOF.bend" "$ROOT/agent-machine/README.md" "$stage/task-machine/"
+cp -- "$ROOT/agent-machine/"*.bend "$ROOT/agent-machine/README.md" "$stage/task-machine/"
 chmod +x "$stage/.agents/bin/"*.sh
 (cd "$stage" && sha256sum LAWS.bend > .agents/LAWS.sha256)
 # GNU mv: refuse overwrite and never nest in a concurrently created directory.

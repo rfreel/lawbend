@@ -16,10 +16,14 @@ def verdict(pass: Bool, e: M.Evidence<U32>) -> M.Verdict<U32, String>:
 def solve(input: Nat) -> IO(Nat):
   IO.pure(Nat, 0n)
 
-def verify(+input: Nat, +candidate: Nat) -> IO(M.Verdict<U32, String>):
+def verify_reusable(+input: Nat, +candidate: Nat) -> IO(M.Verdict<U32, String>):
   do IO<M.Verdict<U32, String>>:
     IO.print("verify")
     return verdict(Nat.is_eq(input, candidate), evidence(input, candidate))
+
+# The callback contract is affine. Reuse is explicit inside the implementation.
+def verify(input: Nat, candidate: Nat) -> IO(M.Verdict<U32, String>):
+  verify_reusable(input, candidate)
 
 def repair(input: Nat, candidate: Nat, defects: List<&2, String>) -> IO(Nat):
   do IO<Nat>:

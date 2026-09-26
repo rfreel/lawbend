@@ -1,18 +1,9 @@
 name: Agent system acceptance
 on:
   push:
-    paths:
-      - '.agents/tests/**'
-      - '.agents/bin/**'
-      - 'templates/bend-proof/**'
-      - 'docs/plans/agent-completion.md'
-      - '.github/workflows/agent-system.yml'
+    paths: ['.agents/tests/**', '.agents/bin/**', '.agents/CLAIMS.json', 'templates/bend-proof/**', 'agent-machine/**', 'docs/plans/agent-completion.md', '.github/workflows/agent-system.yml']
   pull_request:
-    paths:
-      - '.agents/tests/**'
-      - '.agents/bin/**'
-      - 'templates/bend-proof/**'
-      - '.github/workflows/agent-system.yml'
+    paths: ['.agents/tests/**', '.agents/bin/**', '.agents/CLAIMS.json', 'templates/bend-proof/**', 'agent-machine/**', '.github/workflows/agent-system.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,9 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash .agents/tests/receipts.sh
+      - run: bash .agents/tests/receipt-context.sh
   initializer:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    env:
+      BEND_NO_TELEMETRY: '1'
     steps:
       - uses: actions/checkout@v4
       - name: Install official Bend checker
@@ -38,8 +32,18 @@ jobs:
           curl --fail --location --retry 2 --max-time 90 -o "$RUNNER_TEMP/bend.tar.gz" https://github.com/bendlang/bend/releases/download/v2.0.27/bend-2.0.27-linux-x64.tar.gz
           echo "58adc86af6605ed0c48f7d84e4c23028f78893ce4a867a20a4f004b11582687b  $RUNNER_TEMP/bend.tar.gz" | sha256sum --check -
           mkdir -p "$RUNNER_TEMP/bend"
-          tar -xzf "$RUNNER_TEMP/bend.tar.gz" -C "$RUNNER_TEMP/bend" --strip-components=1
+          tar -xzf "$RUNNER_TEMP/bend.tar.gz" -C "$RUNNER_TEMP/bend" --strip-components=1 2> "$RUNNER_TEMP/tar.log" || { cat "$RUNNER_TEMP/tar.log"; exit 1; }
           echo "BEND=$RUNNER_TEMP/bend/bin/bend" >> "$GITHUB_ENV"
+          echo "GATE_CONTEXT_ID=linux-x64:bend-2.0.27:58adc86af6605ed0c48f7d84e4c23028f78893ce4a867a20a4f004b11582687b:$(uname -sr)" >> "$GITHUB_ENV"
           "$RUNNER_TEMP/bend/bin/bend" version
-          "$RUNNER_TEMP/bend/bin/bend" guide
-      - run: bash .agents/tests/initializer.sh
+          "$RUNNER_TEMP/bend/bin/bend" guide > "$RUNNER_TEMP/guide.md"
+      - name: Exercise generated consumer and record result
+        shell: bash
+        run: |
+          .agents/bin/gate-receipt.sh run initializer.consumer build/gate-receipts/initializer.consumer.json "$($BEND version)" "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" -- bash .agents/tests/initializer.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: initializer-receipts-and-logs
+          path: build/gate-receipts/
+          if-no-files-found: ignore

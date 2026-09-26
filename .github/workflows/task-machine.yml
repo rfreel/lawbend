@@ -1,9 +1,9 @@
 name: Bend task machine
 on:
   push:
-    paths: ['agent-machine/**', '.agents/tests/machine.sh', '.github/workflows/task-machine.yml', 'docs/plans/task-machine.md']
+    paths: ['agent-machine/**', '.agents/tests/machine.sh', '.agents/bin/gate-receipt.sh', '.agents/CLAIMS.json', '.github/workflows/task-machine.yml', 'docs/plans/task-machine.md']
   pull_request:
-    paths: ['agent-machine/**', '.agents/tests/machine.sh', '.github/workflows/task-machine.yml']
+    paths: ['agent-machine/**', '.agents/tests/machine.sh', '.agents/bin/gate-receipt.sh', '.agents/CLAIMS.json', '.github/workflows/task-machine.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -25,9 +25,22 @@ jobs:
           curl --fail --location --retry 2 --max-time 90 -o "$RUNNER_TEMP/bend.tar.gz" https://github.com/bendlang/bend/releases/download/v2.0.27/bend-2.0.27-linux-x64.tar.gz
           echo "58adc86af6605ed0c48f7d84e4c23028f78893ce4a867a20a4f004b11582687b  $RUNNER_TEMP/bend.tar.gz" | sha256sum --check -
           mkdir -p "$RUNNER_TEMP/bend"
-          tar -xzf "$RUNNER_TEMP/bend.tar.gz" -C "$RUNNER_TEMP/bend" --strip-components=1
+          tar -xzf "$RUNNER_TEMP/bend.tar.gz" -C "$RUNNER_TEMP/bend" --strip-components=1 2> "$RUNNER_TEMP/tar.log" || { cat "$RUNNER_TEMP/tar.log"; exit 1; }
           echo "BEND=$RUNNER_TEMP/bend/bin/bend" >> "$GITHUB_ENV"
+          echo "GATE_CONTEXT_ID=linux-x64:bend-2.0.27:58adc86af6605ed0c48f7d84e4c23028f78893ce4a867a20a4f004b11582687b:$(uname -sr)" >> "$GITHUB_ENV"
           "$RUNNER_TEMP/bend/bin/bend" version
           "$RUNNER_TEMP/bend/bin/bend" guide > "$RUNNER_TEMP/guide.md"
-      - name: Check laws and actual IO protocol
-        run: bash .agents/tests/machine.sh
+      - name: Check declared Bend laws
+        shell: bash
+        run: |
+          .agents/bin/gate-receipt.sh run task-machine.proof build/gate-receipts/task-machine.proof.json "$($BEND version)" "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" -- "$BEND" agent-machine/PROOF.bend
+      - name: Check actual IO protocol and mutation rejection
+        shell: bash
+        run: |
+          .agents/bin/gate-receipt.sh run task-machine.protocol build/gate-receipts/task-machine.protocol.json "$($BEND version)" "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" -- bash .agents/tests/machine.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: task-machine-receipts-and-logs
+          path: build/gate-receipts/
+          if-no-files-found: ignore
