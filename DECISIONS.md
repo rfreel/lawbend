@@ -98,3 +98,17 @@ observation of whether routing behaves as designed.
 
 **Consequence:** a control-doc-only change should run the lightweight control
 gate and skip the Keccak research and immutable-law gates.
+
+
+## D-0010 — Expected failures need typed diagnostics
+
+**Decision:** a gate that expects failure must match the expected failure class,
+not ban a generic word such as `Error:`.
+
+**Reason:** the immutable meta-law intentionally has nine open laws. A newer
+Bend checker reports that expected condition as `Error: 9 TODOs found.`, which
+made the old broad `! grep "Error:"` predicate reject a correct observation.
+
+**Consequence:** negative gates identify the expected diagnostic and reject only
+additional/unexpected errors. Tool-output wording changes are treated as tooling
+evidence, not as theorem failures.
