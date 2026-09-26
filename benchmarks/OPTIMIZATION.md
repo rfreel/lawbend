@@ -1,5 +1,41 @@
 # Stock Bend optimization investigation
 
+## Control state
+
+- **Target:** `Bend / optimized portable C <= 2` on every contracted workload.
+- **Current status:** unresolved / target not reached.
+- **Protected property:** the existing public API and proof boundary may not be
+  weakened to manufacture a performance pass.
+- **Experiment authority:** `research_contract.json`.
+- **Selection rule:** choose the next isolated hypothesis by information gained
+  per resource cost; do not mix contract changes with source-only experiments.
+
+## Next orthogonal paths
+
+1. **Representation-bridge path.** The retained bit-interleaved prototype is
+   interesting only if its representation can be related to the verified public
+   semantics. First attempt the smallest encode/decode and primitive-operation
+   refinement obligations. A proof blocker is information; do not hide it by
+   benchmarking an unverifiable production replacement.
+2. **Current-representation path.** Continue one-at-a-time scheduling/lowering
+   hypotheses only where generated-code inspection gives a concrete mechanism.
+   Reject unstable micro-differences rather than accumulating knobs.
+3. **Contract-change path.** A new Bend/compiler/toolchain version is a separate
+   experiment. It must establish a new contract and re-run the dependent proof,
+   runtime, provenance, and performance gates before comparison.
+
+### Stop/link conditions
+
+- formal bridge succeeds → link to full public proof, then benchmark;
+- formal bridge fails for a real semantic reason → retain counterevidence and
+  move to a different representation hypothesis;
+- candidate proof/runtime fails → do not benchmark it as an accepted candidate;
+- candidate measures better → require the same contracted workloads and
+  independent confirmation before promotion;
+- changing workload/reference/toolchain → stop and create a new experiment
+  boundary rather than comparing unlike states.
+
+
 The target is `Bend time / optimized portable C time <= 2` across the benchmark
 workloads. **The target has not been reached.** The production implementation and
 its full public sponge proof are retained; experimental candidates are not

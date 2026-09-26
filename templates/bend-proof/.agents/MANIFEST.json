@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "intent": "INTENT.md",
+  "model": "MODEL.bend",
+  "laws": "LAWS.bend",
+  "proof": "PROOF.bend",
+  "trust": "TRUST.md",
+  "law_approval": "not_established_by_generation",
+  "paths": {
+    "proof": {"read": ["LAWS.bend", "MODEL.bend", "PROOF.bend"], "command": "bend PROOF.bend"},
+    "runtime": {"read": ["main.bend", "MODEL.bend"], "command": "bend main.bend"},
+    "task_machine": {"read": ["task-machine/README.md", "task-machine/LAWS.bend"], "command": "bend task-machine/PROOF.bend"},
+    "evidence": {"read": ["TRUST.md", ".agents/CLAIMS.json", "evidence/README.md"]},
+    "tooling": {"read": [".agents/TOOLCHAIN.json", ".agents/bin/check-proof.sh"]}
+  }
+}
