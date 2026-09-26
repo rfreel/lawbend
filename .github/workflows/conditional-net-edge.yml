@@ -28,7 +28,7 @@ jobs:
           echo '58adc86af6605ed0c48f7d84e4c23028f78893ce4a867a20a4f004b11582687b  bend.tar.gz' | sha256sum -c -
           mkdir -p "$HOME/.bend"
           tar -xzf bend.tar.gz -C "$HOME/.bend" --strip-components=1
-          "$HOME/.bend/bin/bend" --version
+          "$HOME/.bend/bin/bend" --help
       - name: Read Bend guide
         run: |
           "$HOME/.bend/bin/bend" guide
