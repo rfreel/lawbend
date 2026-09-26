@@ -1,0 +1,49 @@
+name: Agent control plane
+
+on:
+  push:
+    paths:
+      - 'SYSTEM.md'
+      - 'INTENT.md'
+      - 'MODEL.md'
+      - 'DECISIONS.md'
+      - 'ROADMAP.md'
+      - 'AGENTS.md'
+      - '.agents/MANIFEST.json'
+      - '.agents/TASK_TEMPLATE.md'
+      - '.agents/skills/bend2-official-workflow/**'
+      - '.github/workflows/control-plane.yml'
+  pull_request:
+    paths:
+      - 'SYSTEM.md'
+      - 'INTENT.md'
+      - 'MODEL.md'
+      - 'DECISIONS.md'
+      - 'ROADMAP.md'
+      - 'AGENTS.md'
+      - '.agents/MANIFEST.json'
+      - '.agents/TASK_TEMPLATE.md'
+      - '.agents/skills/bend2-official-workflow/**'
+      - '.github/workflows/control-plane.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate control topology
+        shell: bash
+        run: |
+          set -euo pipefail
+          jq -e '.schema_version == 1 and .control_root == "SYSTEM.md"' .agents/MANIFEST.json >/dev/null
+          for f in SYSTEM.md INTENT.md MODEL.md DECISIONS.md ROADMAP.md AGENTS.md .agents/TASK_TEMPLATE.md; do
+            test -s "$f"
+          done
+          grep -F 'SYSTEM.md' AGENTS.md >/dev/null
+          grep -F 'LAW.bend' MODEL.md >/dev/null
+          grep -F 'LAWS.bend' MODEL.md >/dev/null
+          grep -F 'benchmarks/research_contract.json' MODEL.md >/dev/null

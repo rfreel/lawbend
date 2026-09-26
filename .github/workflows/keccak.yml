@@ -1,7 +1,43 @@
 name: Keccak research gate
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'spec/**'
+      - 'proofs/**'
+      - 'tests/**'
+      - 'tools/**'
+      - 'benchmarks/**'
+      - '.agents/skills/bend-build/**'
+      - 'LAWS.bend'
+      - 'PROOF.bend'
+      - 'main.bend'
+      - 'keccak.bend'
+      - 'package.bend'
+      - 'research_loop.py'
+      - 'research_validate.py'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/keccak.yml'
   pull_request:
+    paths:
+      - 'src/**'
+      - 'spec/**'
+      - 'proofs/**'
+      - 'tests/**'
+      - 'tools/**'
+      - 'benchmarks/**'
+      - '.agents/skills/bend-build/**'
+      - 'LAWS.bend'
+      - 'PROOF.bend'
+      - 'main.bend'
+      - 'keccak.bend'
+      - 'package.bend'
+      - 'research_loop.py'
+      - 'research_validate.py'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/keccak.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,7 +55,7 @@ jobs:
           echo '496ff13a312221c3dc0dde4077368ced42c0f3eadcb61c2d43de5caddf0e50b4  bend.tar.gz' | sha256sum -c -
           mkdir -p "$HOME/.bend"
           tar -xzf bend.tar.gz -C "$HOME/.bend" --strip-components=1
-          "$HOME/.bend/bin/bend" --version
+          "$HOME/.bend/bin/bend" version || "$HOME/.bend/bin/bend" --help
           clang --version
       - name: Install pinned Python reference
         run: |

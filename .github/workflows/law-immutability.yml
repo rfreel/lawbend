@@ -2,7 +2,16 @@ name: law-immutability
 
 on:
   push:
+    paths:
+      - 'LAW.bend'
+      - 'LAW.IMMUTABLE'
+      - '.github/workflows/law-immutability.yml'
   pull_request:
+    paths:
+      - 'LAW.bend'
+      - 'LAW.IMMUTABLE'
+      - '.github/workflows/law-immutability.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
