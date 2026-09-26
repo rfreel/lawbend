@@ -12,19 +12,38 @@ grep -Fx 'exhausted:0:1' "$RUNNER_TEMP/task-machine.log"
 test "$(grep -c '^blocked:' "$RUNNER_TEMP/task-machine.log")" -eq 3
 test "$(grep -c '^verify$' "$RUNNER_TEMP/task-machine.log")" -eq 12
 test "$(grep -c '^repair$' "$RUNNER_TEMP/task-machine.log")" -eq 6
+# Assertions about final evidence/defects execute in Bend, not in shell.
+"$BEND" EVIDENCE_TESTS.bend | tee "$RUNNER_TEMP/evidence-machine.log"
 "$BEND" RENDER_TESTS.bend | tee "$RUNNER_TEMP/render-machine.log"
 grep -Fx 'render-code:npm test' "$RUNNER_TEMP/render-machine.log"
 grep -Fx 'render-text:example prose' "$RUNNER_TEMP/render-machine.log"
-# The expected relation comes from the user's supplied code-block law.
-# Mutate implementation only; retain the law and require a genuine checker error.
+# Mutate implementations in isolation; never change requirements to get a pass.
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-cp -- ./*.bend "$TMP/"
-sed 's/case Code{code}: CodeBlock{code}/case Code{code}: Paragraph{code}/' RENDER.bend > "$TMP/RENDER.bend"
-if (cd "$TMP" && "$BEND" PROOF.bend) > "$TMP/rejected.log" 2>&1; then
+mkdir -p "$TMP/render" "$TMP/evidence"
+cp -- ./*.bend "$TMP/render/"
+sed 's/case Code{code}: CodeBlock{code}/case Code{code}: Paragraph{code}/' RENDER.bend > "$TMP/render/RENDER.bend"
+if (cd "$TMP/render" && "$BEND" PROOF.bend) > "$TMP/render/rejected.log" 2>&1; then
   echo 'FAIL: checker accepted code rendered as a paragraph' >&2
   exit 1
 fi
-cat "$TMP/rejected.log"
-grep -F 'code_is_always_a_block' "$TMP/rejected.log" >/dev/null
+cat "$TMP/render/rejected.log"
+grep -F 'code_is_always_a_block' "$TMP/render/rejected.log" >/dev/null
+# The user's Exhausted constructor must keep the final defects. Deliberately
+# discard them in a temporary implementation and require the runtime assertion
+# to fail by name. A parse error, missing binary or timeout is not a pass.
+cp -- ./*.bend "$TMP/evidence/"
+sed 's/Exhausted{candidate, evidence, defects, audit}/Exhausted{candidate, evidence, Nil{}, audit}/' MACHINE.bend > "$TMP/evidence/MACHINE.bend"
+if cmp -s MACHINE.bend "$TMP/evidence/MACHINE.bend"; then
+  echo 'FAIL: defect-dropping mutation did not change the source' >&2
+  exit 1
+fi
+if (cd "$TMP/evidence" && "$BEND" EVIDENCE_TESTS.bend) > "$TMP/evidence/rejected.log" 2>&1; then
+  echo 'FAIL: runtime accepted discarded final defects' >&2
+  exit 1
+fi
+cat "$TMP/evidence/rejected.log"
+grep -F 'FAIL: zero-fuel-exhausted' "$TMP/evidence/rejected.log" >/dev/null
+# Re-run the unmodified implementation after the rejection probe.
+"$BEND" EVIDENCE_TESTS.bend
 echo 'BEND TASK MACHINE CHECKS PASS'
