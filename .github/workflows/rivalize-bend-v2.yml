@@ -1,0 +1,72 @@
+name: Rivalize Bend 2.0.32 verification
+
+on:
+  push:
+    branches:
+      - verify/rivalize-bend-v2
+    paths:
+      - 'rivalize-ci/**'
+      - '.github/workflows/rivalize-bend-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      BEND_NO_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pinned Bend 2.0.32
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --max-time 120             -o "$RUNNER_TEMP/bend.tar.gz"             https://github.com/bendlang/bend/releases/download/v2.0.32/bend-2.0.32-linux-x64.tar.gz
+          echo "5c365ddb12954d0933cef751802e0f7d9875f842edcb80f9661f89cd1a9ff7b6  $RUNNER_TEMP/bend.tar.gz" | sha256sum --check -
+          mkdir -p "$RUNNER_TEMP/bend"
+          tar -xzf "$RUNNER_TEMP/bend.tar.gz" -C "$RUNNER_TEMP/bend" --strip-components=1
+          echo "$RUNNER_TEMP/bend/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bend/bin/bend" version
+
+      - name: Bend check-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/rivalize
+          for d in rivalize-ci/models/02_proof_carrier rivalize-ci/models/03_epoch_bound rivalize-ci/models/04_monolithic_dual_receipt rivalize-ci/models/05_split_ratchet; do
+            echo "===== $d =====" | tee -a build/rivalize/check-only.log
+            bend "$d/PROOF.bend" --check-only 2>&1 | tee -a build/rivalize/check-only.log
+          done
+
+      - name: Install pinned Lean 4.34.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y zstd
+          curl --fail --location --retry 3 --max-time 300             -o "$RUNNER_TEMP/lean.tar.zst"             https://github.com/leanprover/lean4/releases/download/v4.34.0/lean-4.34.0-linux.tar.zst
+          echo "caaa98356098c85dc0fcbbd28e1ec66f39eb6551829972b752ff20e1286b646b  $RUNNER_TEMP/lean.tar.zst" | sha256sum --check -
+          mkdir -p "$RUNNER_TEMP/lean"
+          tar --use-compress-program=unzstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP/lean" --strip-components=1
+          echo "$RUNNER_TEMP/lean/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/lean/bin/lean" --version
+
+      - name: BendTT verdict
+        shell: bash
+        run: |
+          set -euo pipefail
+          for d in rivalize-ci/models/02_proof_carrier rivalize-ci/models/03_epoch_bound rivalize-ci/models/04_monolithic_dual_receipt rivalize-ci/models/05_split_ratchet; do
+            echo "===== $d =====" | tee -a build/rivalize/verdict.log
+            bend "$d/PROOF.bend" --verdict 2>&1 | tee -a build/rivalize/verdict.log
+          done
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rivalize-bend-2.0.32-logs
+          path: build/rivalize/
+          if-no-files-found: ignore
