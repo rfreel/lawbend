@@ -4,7 +4,17 @@ import ./main.bend as R
 import ./LAWS.bend as Laws
 
 def Laws.reject_is_identity(s):
-  {==}
+  match s:
+    case R.Draft{}:
+      {==}
+    case R.Shadow{}:
+      {==}
+    case R.Canary{}:
+      {==}
+    case R.Limited{}:
+      {==}
+    case R.Full{}:
+      {==}
 
 def Laws.never_decreases(s, ok):
   match s ok:
