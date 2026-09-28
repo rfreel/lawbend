@@ -21,18 +21,24 @@ def rank(s: Stage) -> Nat:
       4n
 
 def advance(s: Stage, ok: Bool) -> Stage:
-  match ok:
-    case False{}:
-      s
-    case True{}:
-      match s:
-        case Draft{}:
-          Shadow{}
-        case Shadow{}:
-          Canary{}
-        case Canary{}:
-          Limited{}
-        case Limited{}:
-          Full{}
-        case Full{}:
-          Full{}
+  match s ok:
+    case Draft{} False{}:
+      Draft{}
+    case Draft{} True{}:
+      Shadow{}
+    case Shadow{} False{}:
+      Shadow{}
+    case Shadow{} True{}:
+      Canary{}
+    case Canary{} False{}:
+      Canary{}
+    case Canary{} True{}:
+      Limited{}
+    case Limited{} False{}:
+      Limited{}
+    case Limited{} True{}:
+      Full{}
+    case Full{} False{}:
+      Full{}
+    case Full{} True{}:
+      Full{}
