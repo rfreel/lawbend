@@ -1,7 +1,55 @@
 name: Keccak research gate
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'spec/**'
+      - 'proofs/**'
+      - 'tests/**'
+      - 'tools/**'
+      - 'benchmarks/**'
+      - '!benchmarks/**/*.md'
+      - '!benchmarks/**/*.json'
+      - 'benchmarks/research_contract.json'
+      - 'benchmarks/source-manifest.json'
+      - '.agents/skills/bend-build/**'
+      - '.agents/CLAIMS.json'
+      - '.agents/bin/gate-receipt.sh'
+      - 'LAWS.bend'
+      - 'PROOF.bend'
+      - 'main.bend'
+      - 'keccak.bend'
+      - 'package.bend'
+      - 'research_loop.py'
+      - 'research_validate.py'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/keccak.yml'
   pull_request:
+    paths:
+      - 'src/**'
+      - 'spec/**'
+      - 'proofs/**'
+      - 'tests/**'
+      - 'tools/**'
+      - 'benchmarks/**'
+      - '!benchmarks/**/*.md'
+      - '!benchmarks/**/*.json'
+      - 'benchmarks/research_contract.json'
+      - 'benchmarks/source-manifest.json'
+      - '.agents/skills/bend-build/**'
+      - '.agents/CLAIMS.json'
+      - '.agents/bin/gate-receipt.sh'
+      - 'LAWS.bend'
+      - 'PROOF.bend'
+      - 'main.bend'
+      - 'keccak.bend'
+      - 'package.bend'
+      - 'research_loop.py'
+      - 'research_validate.py'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/keccak.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,7 +67,7 @@ jobs:
           echo '496ff13a312221c3dc0dde4077368ced42c0f3eadcb61c2d43de5caddf0e50b4  bend.tar.gz' | sha256sum -c -
           mkdir -p "$HOME/.bend"
           tar -xzf bend.tar.gz -C "$HOME/.bend" --strip-components=1
-          "$HOME/.bend/bin/bend" --version
+          "$HOME/.bend/bin/bend" version || "$HOME/.bend/bin/bend" --help
           clang --version
       - name: Install pinned Python reference
         run: |
@@ -33,9 +81,19 @@ jobs:
         env:
           BEND_NO_TELEMETRY: '1'
         run: .venv/bin/python research_loop.py --recipes rol0_identity --sizes 0 136 --samples 3
+      - name: Emit gate receipt
+        if: always()
+        shell: bash
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          evidence_uri="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          .agents/bin/gate-receipt.sh emit             keccak.research-gate "$RESULT"             "research_validate.py --mutations; research_loop.py --recipes rol0_identity --sizes 0 136 --samples 3"             "Bend 2.0.16 + PyCryptodome 3.23.0"             "$evidence_uri"             build/gate-receipts/keccak.research-gate.json -
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: keccak-research-report
-          path: build/research-runs/latest.json
+          path: |
+            build/research-runs/latest.json
+            build/gate-receipts/keccak.research-gate.json
           if-no-files-found: ignore

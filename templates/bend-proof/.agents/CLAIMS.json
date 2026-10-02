@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "claims": {
+    "project.proof": {
+      "gates": ["F", "V"],
+      "description": "The root project laws were checked by the pinned Bend compiler.",
+      "scope": "Only the root formal laws; not external evidence, human acceptance or generic IO runtime correctness.",
+      "dependencies": ["MODEL.bend", "main.bend", "LAWS.bend", "PROOF.bend", ".agents/LAWS.sha256", ".agents/TOOLCHAIN.json", ".agents/bin/check-proof.sh", ".github/workflows/proof.yml"]
+    },
+    "project.external": {
+      "gates": ["X"],
+      "description": "Independent observations of a real artifact against fixed criteria.",
+      "scope": "Must be supplied by a real observer; the initializer does not establish this claim.",
+      "dependencies": ["INTENT.md", "evidence/observations.json"]
+    }
+  }
+}

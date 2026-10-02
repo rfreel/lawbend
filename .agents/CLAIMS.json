@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "claims": {
+    "control.topology": {
+      "gates": ["M", "V"],
+      "description": "Declared control routes and dependency inventories parse and resolve.",
+      "scope": "Control document and routing structure only; not optimal ergonomics or Keccak semantics.",
+      "dependencies": ["SYSTEM.md", "INTENT.md", "MODEL.md", "DECISIONS.md", "ROADMAP.md", "AGENTS.md", ".agents/MANIFEST.json", ".agents/TASK_TEMPLATE.md", ".agents/CLAIMS.json", ".agents/bin/gate-receipt.sh", ".github/workflows/control-plane.yml"]
+    },
+    "meta-law.integrity": {
+      "gates": ["M", "V"],
+      "description": "Canonical meta-law identity and expected nine-open-law diagnostic without additional errors.",
+      "scope": "LAW.bend identity and checker shape; its nine open laws remain unproved.",
+      "dependencies": ["LAW.bend", "LAW.IMMUTABLE", ".agents/bin/gate-receipt.sh", ".github/workflows/law-immutability.yml"]
+    },
+    "keccak.research-gate": {
+      "gates": ["F", "X", "O", "V"],
+      "description": "Existing public Keccak proof, finite independent validation, mutation rejection and smoke research trial.",
+      "scope": "Configured research_validate --mutations and smoke research_loop; not the full <=2x target.",
+      "dependencies": ["src", "spec", "proofs", "tests", "tools", "LAWS.bend", "PROOF.bend", "main.bend", "keccak.bend", "package.bend", "research_loop.py", "research_validate.py", "pyproject.toml", "uv.lock", "benchmarks/research_contract.json", "benchmarks/source-manifest.json", "benchmarks/driver.bend", "benchmarks/xkcp.c", ".agents/skills/bend-build", ".agents/bin/gate-receipt.sh", ".github/workflows/keccak.yml"]
+    },
+    "task-machine.proof": {
+      "gates": ["F", "V"],
+      "description": "Seven declared rendering and terminal evidence-preservation laws pass the pinned Bend checker.",
+      "scope": "Declared laws only; not observer authenticity, Google Docs correctness, full host IO semantics or holdout generalization.",
+      "dependencies": ["agent-machine/MACHINE.bend", "agent-machine/RENDER.bend", "agent-machine/LAWS.bend", "agent-machine/PROOF.bend", ".github/workflows/task-machine.yml"]
+    },
+    "task-machine.protocol": {
+      "gates": ["O", "V"],
+      "description": "Concrete typed protocol cases execute with expected call counts, final evidence/defect retention, evidence binding and rejection behavior; Docs adapter datatypes check.",
+      "scope": "Local fixtures, code-block proof rejection, runtime rejection of discarded final defects and adapter datatypes; not independent-world observation or universal generalization.",
+      "dependencies": ["agent-machine/MACHINE.bend", "agent-machine/RENDER.bend", "agent-machine/LAWS.bend", "agent-machine/PROOF.bend", "agent-machine/TESTS.bend", "agent-machine/EVIDENCE_TESTS.bend", "agent-machine/RENDER_TESTS.bend", "agent-machine/DOCS_MODEL.bend", ".agents/tests/machine.sh", ".github/workflows/task-machine.yml"]
+    },
+    "initializer.consumer": {
+      "gates": ["F", "O", "V"],
+      "description": "A clean generated project has an open root law, admits the completed tutorial proof and rejects its invalid replacement.",
+      "scope": "GNU/Linux clean-directory and recorded-check fixtures; not a blind-agent usability or holdout-task result.",
+      "dependencies": ["templates/bend-proof", "agent-machine", "LICENSE", ".agents/bin/bend-proof-init.sh", ".agents/bin/gate-receipt.sh", ".agents/tests/initializer.sh", ".github/workflows/agent-system.yml"]
+    }
+  }
+}

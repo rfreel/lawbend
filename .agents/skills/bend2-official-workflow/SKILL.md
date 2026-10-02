@@ -16,7 +16,7 @@ authority for work performed in the current environment.
 
 Before changing Bend code:
 
-1. Run `bend --version`.
+1. Run `bend version`.
 2. Run `bend guide` and read the complete output.
 3. Read the repository instructions and relevant existing `.bend` files.
 4. If examples or syntax clarification are needed, consult:
@@ -27,8 +27,11 @@ Before changing Bend code:
 5. Prefer the installed guide over stale examples when syntax or behavior differs.
 
 If Bend is unavailable in the execution environment, use the repository's approved
-build/package path. Do not substitute an unverified compiler while making proof or
-compatibility claims.
+build/package path or a repository-controlled GitHub Actions job that installs the
+pinned official release and records its checksum/version. Treat a missing local
+executable as a tooling state, not as permission to replace Bend proof checking with
+Python, C, JavaScript, Lean, or another verifier. Do not substitute an unverified
+compiler while making proof or compatibility claims.
 
 ## Laws and proofs
 

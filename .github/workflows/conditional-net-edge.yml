@@ -5,11 +5,11 @@ on:
     branches:
       - proof/conditional-net-edge
     paths:
-      - 'proofs/conditional-net-edge/**'
+      - 'conditional-net-edge/**'
       - '.github/workflows/conditional-net-edge.yml'
   pull_request:
     paths:
-      - 'proofs/conditional-net-edge/**'
+      - 'conditional-net-edge/**'
       - '.github/workflows/conditional-net-edge.yml'
   workflow_dispatch:
 
@@ -33,7 +33,7 @@ jobs:
         run: |
           "$HOME/.bend/bin/bend" guide > /dev/null
       - name: Check conditional net edge laws
-        working-directory: proofs/conditional-net-edge
+        working-directory: conditional-net-edge
         env:
           BEND_NO_TELEMETRY: '1'
         run: |
