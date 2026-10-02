@@ -5,3 +5,11 @@ __pycache__/
 vendor/XKCP/
 
 vendor/lean-keccak/
+
+# Local Python environments, caches and private environment configuration
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+!.env.example
+!.env.sample

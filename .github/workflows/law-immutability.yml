@@ -24,7 +24,7 @@ jobs:
   verify-law:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Verify canonical LAW.bend blob
         shell: bash
@@ -37,7 +37,7 @@ jobs:
           test "$actual" = "$expected"
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # main observed 2026-10-02
 
       - name: Parse and type-check canonical law specification
         shell: bash
@@ -62,7 +62,7 @@ jobs:
           evidence_uri="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           .agents/bin/gate-receipt.sh emit             meta-law.integrity "$RESULT"             "git hash-object LAW.bend; nix run github:lukasl-dev/bend.nix -- LAW.bend"             "nix + Bend checker"             "$evidence_uri"             build/gate-receipts/meta-law.integrity.json -
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: gate-receipt-meta-law-integrity

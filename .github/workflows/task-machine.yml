@@ -17,7 +17,7 @@ jobs:
     env:
       BEND_NO_TELEMETRY: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Install pinned official Bend
         shell: bash
         run: |
@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           .agents/bin/gate-receipt.sh run task-machine.protocol build/gate-receipts/task-machine.protocol.json "$($BEND version)" "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" -- bash .agents/tests/machine.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: task-machine-receipts-and-logs
