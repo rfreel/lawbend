@@ -3,6 +3,7 @@ name: Conditional net edge proof
 on:
   push:
     branches:
+      - main
       - proof/conditional-net-edge
     paths:
       - 'conditional-net-edge/**'
